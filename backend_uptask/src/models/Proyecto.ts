@@ -17,6 +17,11 @@ const proyectoSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    status: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 });
 const Proyecto = mongoose.model<TProyecto>("Proyecto", proyectoSchema);

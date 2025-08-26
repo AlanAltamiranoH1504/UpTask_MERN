@@ -46,7 +46,7 @@ const findTareaById = async (req, res) => {
             .populate("proyecto", "_id nombreProyecto nombreCliente descripcion");
         return res.status(200).json({
             status: true,
-            tareas: tareaToShow
+            tarea: tareaToShow
         });
     } catch (e) {
         return res.status(500).json({

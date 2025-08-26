@@ -26,7 +26,7 @@ const proyectoSchema = new Schema({
     tareas: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Tareas"
+            ref: "Tarea"
         }
     ]
 },{timestamps: true});

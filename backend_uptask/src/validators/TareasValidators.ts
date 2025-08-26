@@ -1,4 +1,5 @@
-import {body, validationResult} from "express-validator";
+import {body, param, validationResult} from "express-validator";
+import Tarea from "../models/Tarea";
 
 const CreateTareaRequest = [
     body("nombre")
@@ -24,6 +25,57 @@ const CreateTareaRequest = [
         next();
     }
 ];
+
+const ShowTareaRequest = [
+    param("id")
+        .notEmpty().withMessage("El id de la tarea es obligatorio")
+        .isString().withMessage("El id de la tarea debe ser una cadena de texto"),
+
+    async (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(422).json({
+                errores: errores.array()
+            });
+        }
+        const existenciaTarea = await Tarea.findById(req.params.id);
+        if (!existenciaTarea) {
+            return res.status(404).json({
+                status: false,
+                message: `Tarea con id ${req.params.id} no encontrada`
+            });
+        }
+        next();
+    }
+];
+
+const UpdateTareaRequest = [
+    param("id")
+        .notEmpty().withMessage("El id de la tarea es obligatorio")
+        .isString().withMessage("El id de la tarea debe ser una cadena de texto"),
+    body("nombre")
+        .notEmpty().withMessage("El nombre es obligatorio")
+        .isString().withMessage("El nombre debe ser una cadena de texto"),
+    body("descripcion")
+        .notEmpty().withMessage("La descripcion es obligatoria")
+        .isString().withMessage("La descripcion debe ser una cadena de texto"),
+    body("status")
+        .notEmpty().withMessage("El status el obligatorio")
+        .isString().withMessage("El status debe ser una cadena de texto"),
+
+    (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(422).json({
+                errores: errores.array()
+            });
+        }
+        next();
+    }
+];
+
 export {
-    CreateTareaRequest
+    CreateTareaRequest,
+    ShowTareaRequest,
+    UpdateTareaRequest
 }

@@ -42,6 +42,24 @@ const findProyectoById = async (req, res) => {
     }
 }
 
+const findAllTareasByProyectoId = async (req, res) => {
+    try {
+        const proyectoWithTareas = await Proyecto.findById(req.params.id)
+            .select("-__v -createdAt -updatedAt")
+            .populate("tareas", "_id nombre descripcion status");
+        return res.status(200).json({
+            status: true,
+            proyecto: proyectoWithTareas
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Ocurrio un error en la busqueda de tareas por id de proyecto",
+            error: e.message
+        });
+    }
+}
+
 const saveProyecto = async (req, res) => {
     try {
         const proyectoToCreate = await Proyecto.create({
@@ -105,5 +123,6 @@ export {
     saveProyecto,
     updateProyecto,
     findProyectoById,
-    deleteProyecto
+    deleteProyecto,
+    findAllTareasByProyectoId
 }

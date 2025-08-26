@@ -1,5 +1,6 @@
 import {body, param, validationResult} from "express-validator";
 import Tarea from "../models/Tarea";
+import Proyecto from "../models/Proyecto";
 
 const CreateTareaRequest = [
     body("nombre")
@@ -43,6 +44,29 @@ const ShowTareaRequest = [
             return res.status(404).json({
                 status: false,
                 message: `Tarea con id ${req.params.id} no encontrada`
+            });
+        }
+        next();
+    }
+];
+
+const FindProyectoToTareaRequest = [
+    param("idProyecto")
+        .notEmpty().withMessage("El id del proyecto es obligatorio")
+        .isString().withMessage("El id del proyecto debe ser una cadena de texto"),
+
+    async (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(422).json({
+                errores: errores.array()
+            });
+        }
+        const proyectoToFound = await Proyecto.findById(req.params.idProyecto);
+        if (!proyectoToFound) {
+            return res.status(404).json({
+                status: false,
+                message: `El proyecto con id ${req.params.idProyecto} no fue encontrado`
             });
         }
         next();
@@ -93,5 +117,6 @@ export {
     CreateTareaRequest,
     ShowTareaRequest,
     UpdateTareaRequest,
-    UpdateStatusRequest
+    UpdateStatusRequest,
+    FindProyectoToTareaRequest
 }

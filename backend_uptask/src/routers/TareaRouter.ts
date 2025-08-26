@@ -1,7 +1,15 @@
 import express from "express";
-import {deleteById, findTareaById, prueba, saveTarea, updateStatus, updateTarea} from "../controllers/TareaController";
 import {
-    CreateTareaRequest,
+    deleteById,
+    findAllTareasByIdProyecto,
+    findTareaById,
+    prueba,
+    saveTarea,
+    updateStatus,
+    updateTarea
+} from "../controllers/TareaController";
+import {
+    CreateTareaRequest, FindProyectoToTareaRequest,
     ShowTareaRequest,
     UpdateStatusRequest,
     UpdateTareaRequest
@@ -12,6 +20,7 @@ const router = express.Router();
 
 router.get("/prueba", prueba);
 router.get("/:id", ShowTareaRequest, findTareaById);
+router.get("/:idProyecto/search", FindProyectoToTareaRequest, findAllTareasByIdProyecto);
 router.post("/:id/create", ShowProyectoById, CreateTareaRequest, saveTarea);
 router.put("/:id/update", ShowTareaRequest, UpdateTareaRequest, updateTarea);
 router.put("/:id/update-status", ShowTareaRequest, UpdateStatusRequest, updateStatus);

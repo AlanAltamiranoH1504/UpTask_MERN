@@ -42,7 +42,7 @@ const saveTarea = async (req, res) => {
 const findTareaById = async (req, res) => {
     try {
         const tareaToShow = await Tarea.findById(req.params.id)
-            .select("-createdAt -updatedAt")
+            .select("-createdAt -updatedAt -__v")
             .populate("proyecto", "_id nombreProyecto nombreCliente descripcion");
         return res.status(200).json({
             status: true,
@@ -52,6 +52,31 @@ const findTareaById = async (req, res) => {
         return res.status(500).json({
             status: false,
             message: "Error en busqueda de tarea",
+            error: e.message
+        });
+    }
+}
+
+const findAllTareasByIdProyecto = async (req, res) => {
+    try {
+        const tareasByProyectoId = await Tarea.find({proyecto: req.params.idProyecto})
+            .populate("proyecto", "_id nombreProyecto")
+            .select("-__v -createdAt -updatedAt");
+        if (!tareasByProyectoId) {
+            return res.status(404).json({
+                status: false,
+                message: `No hay tareas disponibles para el proyecto con id ${req.params.idProyectoId}`
+            });
+        }
+
+        return res.status(200).json({
+            status: true,
+            tareas: tareasByProyectoId
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Ocurrio un error en la busqueda de tareas por id de proyecto",
             error: e.message
         });
     }
@@ -108,6 +133,7 @@ const deleteById = async (req, res) => {
                 tareas: req.params.id
             }
         });
+        await tareaToDelete.deleteOne({_id: req.params.id});
         return res.status(200).json({
             status: true,
             message: "Tarea eliminada correctamente"
@@ -127,5 +153,6 @@ export {
     findTareaById,
     deleteById,
     updateTarea,
-    updateStatus
+    updateStatus,
+    findAllTareasByIdProyecto
 }

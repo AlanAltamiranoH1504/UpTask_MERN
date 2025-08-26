@@ -22,7 +22,13 @@ const proyectoSchema = new Schema({
         type: Boolean,
         required: true,
         default: true
-    }
-});
+    },
+    tareas: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Tareas"
+        }
+    ]
+},{timestamps: true});
 const Proyecto = mongoose.model<TProyecto>("Proyecto", proyectoSchema);
 export default Proyecto;

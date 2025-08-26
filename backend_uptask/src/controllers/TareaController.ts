@@ -80,6 +80,26 @@ const updateTarea = async (req, res) => {
     }
 }
 
+const updateStatus = async (req, res) => {
+    try {
+        const tareaToUpdate = await Tarea.findByIdAndUpdate(req.params.id, {
+            $set: {
+                status: req.body.status
+            }
+        }, {new: true});
+        return res.status(200).json({
+            status: true,
+            message: "Estatus de tarea actualizada correctamente"
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en actualización de estatus de tarea",
+            error: e.message
+        });
+    }
+}
+
 const deleteById = async (req, res) => {
     try {
         const tareaToDelete = await Tarea.findByIdAndDelete(req.params.id);
@@ -106,5 +126,6 @@ export {
     saveTarea,
     findTareaById,
     deleteById,
-    updateTarea
+    updateTarea,
+    updateStatus
 }

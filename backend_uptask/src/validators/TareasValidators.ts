@@ -74,8 +74,24 @@ const UpdateTareaRequest = [
     }
 ];
 
+const UpdateStatusRequest = [
+    body("status")
+        .notEmpty().withMessage("El status el obligatorio")
+        .isString().withMessage("El status debe ser una cadena de texto"),
+    (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(422).json({
+                errores: errores.array()
+            });
+        }
+        next();
+    }
+];
+
 export {
     CreateTareaRequest,
     ShowTareaRequest,
-    UpdateTareaRequest
+    UpdateTareaRequest,
+    UpdateStatusRequest
 }

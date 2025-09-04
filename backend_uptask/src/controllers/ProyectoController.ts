@@ -5,12 +5,12 @@ const findAllProyectos = async (request, response) => {
         const proyectos = await Proyecto.find({
             status: true
         });
-        if (proyectos.length <= 0) {
-            return response.status(404).json({
-                status: false,
-                message: "No se encontraron proyectos registrados"
-            }, 404);
-        }
+        // if (proyectos.length <= 0) {
+        //     return response.status(404).json({
+        //         status: false,
+        //         message: "No se encontraron proyectos registrados"
+        //     }, 404);
+        // }
         return response.status(200).json({
             status: true,
             proyectos: proyectos

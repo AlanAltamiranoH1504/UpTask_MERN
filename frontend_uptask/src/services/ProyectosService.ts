@@ -1,6 +1,6 @@
 import type {FormCreateProyectoType} from "../types";
 import clienteAxios from "../axios/ClienteAxios.ts";
-import {responseCreateProyecto} from "../schemas/ProyectosSchemas.ts";
+import {responseCreateProyecto, responseFindAllProyectos} from "../schemas/ProyectosSchemas.ts";
 
 export async function createProyectoPOST(data: FormCreateProyectoType) {
     // eslint-disable-next-line no-useless-catch
@@ -10,7 +10,20 @@ export async function createProyectoPOST(data: FormCreateProyectoType) {
         if (resultAPI.success) {
             console.log("")
         }
-    }catch (e) {
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function findAllProyectosGET() {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        const responseAPI = await clienteAxios.get("/proyectos");
+        const resultAPI = responseFindAllProyectos.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
         throw e;
     }
 }

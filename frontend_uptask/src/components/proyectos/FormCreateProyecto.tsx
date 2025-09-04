@@ -1,11 +1,29 @@
 import {useForm} from "react-hook-form";
 import type {FormCreateProyectoType} from "../../types";
+import {useMutation} from "@tanstack/react-query";
+import {createProyectoPOST} from "../../services/ProyectosService.ts";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 
 const FormCreateProyecto = () => {
+    const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<FormCreateProyectoType>();
     function saveProyectoFunction(data: FormCreateProyectoType) {
-        console.log(data)
+        createProyectoMutation.mutate(data);
     }
+
+    const createProyectoMutation = useMutation({
+        mutationKey: ["createProyecto"],
+        mutationFn: createProyectoPOST,
+        onSuccess: () => {
+            toast.success("Proyecto creado correctamente");
+            navigate("/");
+        },
+        onError: (data) => {
+            // @ts-ignore
+            toast.error(data.response.data.message);
+        }
+    })
     return (
         <>
             <form className="mt-10 bg-white shadow p-10 rounded-lg space-y-5"

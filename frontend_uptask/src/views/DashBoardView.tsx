@@ -1,7 +1,16 @@
+import {Link} from "react-router-dom";
+
 const DashBoardView = () => {
     return (
         <>
-            <h2 className="font-varela text-4xl font-semibold">DashBoardView</h2>
+            <h1 className="text-5xl font-black font-varela">Mis proyectos</h1>
+            <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus proyectos</p>
+
+            <nav className="my-5">
+                <Link to="/proyectos/creacion"
+                      className="bg-purple-400 font-varela hover:bg-purple-500 transition-colors duration-500 px-10 py-3 text-white text-xl font-bold cursor-pointer rounded-lg">Nuevo
+                    Proyecto</Link>
+            </nav>
         </>
     );
 }

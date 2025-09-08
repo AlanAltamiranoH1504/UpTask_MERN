@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import AppLayout from "./layouts/AppLayout.tsx";
 import DashBoardView from "./views/DashBoardView.tsx";
 import CreateProyectoView from "./views/proyectos/CreateProyectoView.tsx";
+import EditProyectoView from "./views/proyectos/EditProyectoView.tsx";
 const AppRouter = () => {
     return (
         <>
@@ -11,6 +12,7 @@ const AppRouter = () => {
                         <Route path="/" element={<DashBoardView/>}></Route>
 
                         <Route path="/proyectos/creacion" element={<CreateProyectoView/>}></Route>
+                        <Route path="/proyectos/edicion/:id" element={<EditProyectoView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

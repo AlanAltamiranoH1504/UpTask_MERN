@@ -13,8 +13,6 @@ const CreateProyectoView = () => {
                     Volver a Proyectos</Link>
             </nav>
             <div className="max-w-5xl mx-auto">
-
-
                 <FormCreateProyecto/>
             </div>
         </>

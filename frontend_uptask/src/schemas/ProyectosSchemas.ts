@@ -24,3 +24,20 @@ export const responseFindAllProyectos = z.object({
         })
     )
 });
+
+export const responseFindProyectoById = z.object({
+    status: z.boolean(),
+    proyecto: z.object({
+        _id: z.string(),
+        nombreProyecto: z.string(),
+        nombreCliente: z.string(),
+        descripcion: z.string(),
+        status: z.boolean(),
+        tareas: z.array(z.object({
+            _id: z.string(),
+            nombre: z.string(),
+            descripcion: z.string(),
+            status: z.string()
+        }))
+    })
+})

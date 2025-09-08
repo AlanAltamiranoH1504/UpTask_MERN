@@ -91,7 +91,7 @@ const DashBoardView = () => {
                                                 </Link>
                                             </MenuItem>
                                             <MenuItem>
-                                                <Link to={``}
+                                                <Link to={`/proyectos/edicion/${proyecto._id}`}
                                                       className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                                     Editar Proyecto
                                                 </Link>

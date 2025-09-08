@@ -5,6 +5,11 @@ export const responseCreateProyecto = z.object({
     message: z.string()
 });
 
+export const responseUpdateProyecto = z.object({
+    status: z.boolean(),
+    message: z.string()
+});
+
 export const responseDeleteProyecto = z.object({
     status: z.boolean(),
     message: z.string()

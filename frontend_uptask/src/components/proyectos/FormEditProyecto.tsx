@@ -1,18 +1,39 @@
 import type {FindProyectoById, FormEditarProyectoType} from "../../types";
 import {useForm} from "react-hook-form";
 import {useEffect} from "react";
+import {useMutation} from "@tanstack/react-query";
+import {updateProyectoByIdPUT} from "../../services/ProyectosService.ts";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 
 type FormEditProyectoProps = {
     proyecto: FindProyectoById
 }
 const FormEditProyecto = ({proyecto}: FormEditProyectoProps) => {
-
+    const navgate = useNavigate();
     const {register, handleSubmit, formState: {errors}, reset} = useForm<FormEditarProyectoType>();
 
     function updateProyectoFunction(data: FormEditarProyectoType) {
-        console.log("Actualizando...");
-        console.log(data)
+        const fullProyecto = {
+            ...data,
+            id: proyecto.proyecto._id
+        };
+        updateProyectoMutation.mutate(fullProyecto);
     }
+
+    const updateProyectoMutation = useMutation({
+        mutationKey: ["updateProyectoById"],
+        mutationFn: updateProyectoByIdPUT,
+        onError: (error) => {
+            toast.error("Ocurrio un error en la actualización");
+            // @ts-ignore
+            toast.error(error.response.data.message);
+        },
+        onSuccess: () => {
+            toast.success("Proyecto actualizado correctamente");
+            navgate("/");
+        }
+    })
 
     useEffect(() => {
         reset({
@@ -20,7 +41,7 @@ const FormEditProyecto = ({proyecto}: FormEditProyectoProps) => {
             nombreCliente: proyecto.proyecto.nombreCliente,
             descripcion: proyecto.proyecto.descripcion
         })
-    }, [proyecto])
+    }, [proyecto]);
 
     return (
         <>
@@ -69,6 +90,23 @@ const FormEditProyecto = ({proyecto}: FormEditProyectoProps) => {
                     ></textarea>
                     <div className="bg-red-100 text-center font-varela font-semibold mt-1 text-red-600 rounded-sm">
                         {errors.descripcion && String(errors.descripcion.message)}
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="status" className="uppercase font-varela font-bold block">Status</label>
+                    <select className="w-full border p-2 rounded-lg font-varela"
+                            {...register("status", {
+                                validate: (v) => v !== undefined && v !== null ? true : "El estado es obligatorio",
+                                setValueAs: (v) => v === "true",
+                            })}
+                    >
+                        <option value="">--- Selecciona una opción ---</option>
+                        <option value="true">Habilitado</option>
+                        <option value="false">Dehabilitado</option>
+                    </select>
+                    <div className="bg-red-100 text-center font-varela font-semibold mt-1 text-red-600 rounded-sm">
+                        {errors.status && String(errors.status.message)}
                     </div>
                 </div>
 

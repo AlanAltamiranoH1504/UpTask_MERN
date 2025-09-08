@@ -5,6 +5,11 @@ export const responseCreateProyecto = z.object({
     message: z.string()
 });
 
+export const responseDeleteProyecto = z.object({
+    status: z.boolean(),
+    message: z.string()
+});
+
 export const responseFindAllProyectos = z.object({
     proyectos: z.array(
         z.object({

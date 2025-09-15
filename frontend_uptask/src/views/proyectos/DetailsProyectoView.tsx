@@ -2,13 +2,14 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {findProyectoByIdGET} from "../../services/ProyectosService.ts";
 import AddTaskModal from "../../components/tareas/AddTaskModal.tsx";
+import TaskList from "../../components/tareas/TaskList.tsx";
 
 const DetailsProyectoView = () => {
     const navigate = useNavigate();
     const params = useParams();
     const id = params.id!;
 
-    const {data, isLoading, isError} = useQuery({
+    const {data, isLoading, isError, error} = useQuery({
         queryKey: ["detailsProyectoById"],
         queryFn: () => findProyectoByIdGET(id),
         retry: false,
@@ -18,7 +19,8 @@ const DetailsProyectoView = () => {
         return <div>Cargando...</div>
     }
     if (isError) {
-        return <div>Ocurrio un error en la busqueda</div>;
+        // @ts-ignore
+        return <div className="text-center text-2xl font-varela font-semibold">{error.response.data.message}</div>;
     }
 
     if (data) return (
@@ -32,6 +34,9 @@ const DetailsProyectoView = () => {
                     className="bg-purple-400 hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
                 >Agregar Tarea</button>
             </nav>
+            <TaskList
+                tareas={data.proyecto.tareas}
+            />
             <AddTaskModal/>
         </>
     );

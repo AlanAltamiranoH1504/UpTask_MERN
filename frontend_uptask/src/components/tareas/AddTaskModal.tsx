@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import {Fragment} from "react";
 import {
     Dialog,
     Transition,
@@ -6,12 +6,19 @@ import {
     DialogPanel,
     DialogTitle,
 } from "@headlessui/react";
+import {useLocation, useNavigate} from "react-router-dom";
+import FormCreateTarea from "./FormCreateTarea.tsx";
 
 export default function AddTaskModal() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const newTask = queryParams.get("newTask");
+    const show = newTask ? true : false;
     return (
         <>
-            <Transition appear show={true} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={() => {}}>
+            <Transition appear show={show} as={Fragment}>
+                <Dialog as="div" className="relative z-10" onClose={() => navigate("", {replace: true})}>
                     <TransitionChild
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -21,7 +28,7 @@ export default function AddTaskModal() {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black/60" />
+                        <div className="fixed inset-0 bg-black/60"/>
                     </TransitionChild>
 
                     <div className="fixed inset-0 overflow-y-auto font-varela">
@@ -35,15 +42,17 @@ export default function AddTaskModal() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
+                                <DialogPanel
+                                    className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
                                     <DialogTitle as="h3" className="font-black text-4xl  my-5">
                                         Nueva Tarea
                                     </DialogTitle>
 
-                                    <p className="text-xl font-bold">
+                                    <p className="text-xl font-bold mb-3">
                                         Llena el formulario y crea {""}
                                         <span className="text-fuchsia-600">una tarea</span>
                                     </p>
+                                    <FormCreateTarea/>
                                 </DialogPanel>
                             </TransitionChild>
                         </div>

@@ -28,7 +28,7 @@ const findProyectoById = async (req, res) => {
     try {
         const proyectoToShow = await Proyecto.findById(req.params.id)
             .select("-__v -createdAt -updatedAt")
-            .populate("tareas", "_id nombre descripcion status");
+            .populate("tareas", "_id nombre descripcion status proyecto");
         return res.status(200).json({
             status: true,
             proyecto: proyectoToShow

@@ -24,3 +24,7 @@ export const responseUpdateTareaAPI = z.object({
     status: z.boolean(),
     message: z.string(),
 });
+export const responseDeleteTareaAPI = z.object({
+    status: z.boolean(),
+    message: z.string(),
+})

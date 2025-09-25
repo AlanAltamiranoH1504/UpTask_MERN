@@ -1,6 +1,11 @@
 import type {FormCreateTarea, FormEditTarea} from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
-import {responseCreateTareaAPI, responseFindTareaByIdAPI, responseUpdateTareaAPI} from "../schemas/TareasSchemas.ts";
+import {
+    responseCreateTareaAPI,
+    responseDeleteTareaAPI,
+    responseFindTareaByIdAPI,
+    responseUpdateTareaAPI
+} from "../schemas/TareasSchemas.ts";
 
 export async function createTareaPOST(tarea: FormCreateTarea) {
     // eslint-disable-next-line no-useless-catch
@@ -39,5 +44,18 @@ export async function updateTareaByIdPUT(data: FormEditTarea) {
         throw new Error("Error en actualización de tarea");
     } catch {
         throw new Error("Error en actualizacion de tarea");
+    }
+}
+
+export async function deleteTareaByIdDELETE(idTask: string) {
+    try {
+        const responseAPI = await ClienteAxios.delete(`/tareas/${idTask}/delete`);
+        const resultAPI = responseDeleteTareaAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+        throw new Error("Error en eliminacion de tarea");
+    } catch {
+        throw new Error("Error en eliminacion de tarea");
     }
 }

@@ -3,12 +3,36 @@ import {EllipsisVerticalIcon} from "@heroicons/react/16/solid";
 import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/react";
 import {Fragment} from "react";
 import {useNavigate} from "react-router-dom";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deleteTareaByIdDELETE} from "../../services/TareasService.ts";
+import {toast} from "react-toastify";
 
 type TaskCardProps = {
     task: TareaDB
 }
 const TaskCard = ({task}: TaskCardProps) => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    function deleteTarea(idTask: string) {
+        console.log(`Eliminando tarea con id ${idTask}`);
+        deleteTareaMutation.mutate(idTask);
+    }
+
+    const deleteTareaMutation = useMutation({
+        mutationKey: ["deleteTareaById"],
+        mutationFn: deleteTareaByIdDELETE,
+        onSuccess: () => {
+            toast.success("Tarea eliminada correctamente");
+            queryClient.invalidateQueries({
+                queryKey: ["detailsProyectoById"]
+            })
+        },
+        onError: (error) => {
+            // @ts-ignore
+            toast.error(error.response.data.message);
+        }
+    })
 
     return (
         <>
@@ -26,7 +50,7 @@ const TaskCard = ({task}: TaskCardProps) => {
                     <Menu as="div" className="relative flex-none">
                         <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                             <span className="sr-only">opciones</span>
-                            <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true" />
+                            <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true"/>
                         </MenuButton>
                         <Transition
                             as={Fragment}
@@ -37,7 +61,8 @@ const TaskCard = ({task}: TaskCardProps) => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                            <MenuItems
+                                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                                 <MenuItem>
                                     <button
                                         type="button"
@@ -62,6 +87,9 @@ const TaskCard = ({task}: TaskCardProps) => {
                                     <button
                                         type="button"
                                         className="block px-3 py-1 text-sm leading-6 text-red-500"
+                                        onClick={() => {
+                                            deleteTarea(task._id)
+                                        }}
                                     >
                                         Eliminar Tarea
                                     </button>

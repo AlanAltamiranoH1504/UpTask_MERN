@@ -42,6 +42,7 @@ export const responseFindProyectoById = z.object({
             _id: z.string(),
             nombre: z.string(),
             descripcion: z.string(),
+            proyecto: z.string(),
             status: z.string()
         }))
     })

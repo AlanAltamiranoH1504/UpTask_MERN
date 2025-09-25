@@ -3,6 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import {findProyectoByIdGET} from "../../services/ProyectosService.ts";
 import AddTaskModal from "../../components/tareas/AddTaskModal.tsx";
 import TaskList from "../../components/tareas/TaskList.tsx";
+import EditTaskData from "../../components/tareas/EditTaskData.tsx";
 
 const DetailsProyectoView = () => {
     const navigate = useNavigate();
@@ -31,13 +32,15 @@ const DetailsProyectoView = () => {
             <nav className="my-5 flex gap-3">
                 <button type="button"
                         onClick={() => navigate("?newTask=true")}
-                    className="bg-purple-400 hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
-                >Agregar Tarea</button>
+                        className="bg-purple-400 hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
+                >Agregar Tarea
+                </button>
             </nav>
             <TaskList
                 tareas={data.proyecto.tareas}
             />
             <AddTaskModal/>
+            <EditTaskData/>
         </>
     );
 }

@@ -11,7 +11,7 @@ export type ProyectoDB = {
 }
 
 export type TareaDB = {
-    id: string,
+    _id: string,
     nombre: string,
     descripcion: string,
     proyecto: string,
@@ -22,6 +22,7 @@ export type TareaDB = {
 export type FormCreateProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombreCliente" | "descripcion">
 export type FormEditarProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombreCliente" | "descripcion" | "status">
 export type FormCreateTarea = Pick<TareaDB, "nombre" | "descripcion" | "proyecto" | "status">
+export type FormEditTarea = Pick<TareaDB, "nombre" | "descripcion" | "status" | "_id">
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

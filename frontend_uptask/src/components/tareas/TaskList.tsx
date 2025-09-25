@@ -15,7 +15,7 @@ const initialStatusGroups: GroupedTask = {
     Completada: []
 }
 
-const statusStyles = {
+const statusStyles : {[key: string]: string} = {
     Pendiente: "border-t-slate-500",
     "En progreso": "border-t-red-500",
     "En espera": "border-t-blue-500",
@@ -30,7 +30,6 @@ const TaskList = ({tareas}: TaskListProps) => {
         return { ...acc, [task.status]: currentGroup };
     }, initialStatusGroups);
 
-    // @ts-ignore
     return (
         <>
             <h2 className="text-5xl font-black my-10 font-varela font-bold">Tareas</h2>
@@ -43,7 +42,7 @@ const TaskList = ({tareas}: TaskListProps) => {
                             {task.length === 0 ? (
                                 <li className="text-gray-500 text-center pt-3">No Hay tareas</li>
                             ) : (
-                                task.map(task => <TaskCard key={task.id} task={task} />)
+                                task.map(task => <TaskCard key={task._id} task={task} />)
                             )}
                         </ul>
                     </div>

@@ -2,11 +2,14 @@ import type {TareaDB} from "../../types";
 import {EllipsisVerticalIcon} from "@heroicons/react/16/solid";
 import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/react";
 import {Fragment} from "react";
+import {useNavigate} from "react-router-dom";
 
 type TaskCardProps = {
     task: TareaDB
 }
 const TaskCard = ({task}: TaskCardProps) => {
+    const navigate = useNavigate();
+
     return (
         <>
             <li className="p-5 bg-white border-slate-300 flex justify-between gap-3">
@@ -45,6 +48,9 @@ const TaskCard = ({task}: TaskCardProps) => {
                                 </MenuItem>
                                 <MenuItem>
                                     <button
+                                        onClick={() => {
+                                            navigate(location.pathname + `?tareaId=${task._id}`)
+                                        }}
                                         type="button"
                                         className="block px-3 py-1 text-sm leading-6 text-gray-900"
                                     >

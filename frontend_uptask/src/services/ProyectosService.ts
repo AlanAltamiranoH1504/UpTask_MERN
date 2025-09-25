@@ -41,6 +41,7 @@ export async function findProyectoByIdGET(id: string) {
         if (resultAPI.success) {
             return resultAPI.data
         }
+        throw new Error("Error en respuesta de api");
     } catch (e) {
         throw e;
     }

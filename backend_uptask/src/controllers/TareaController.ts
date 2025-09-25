@@ -42,7 +42,7 @@ const saveTarea = async (req, res) => {
 const findTareaById = async (req, res) => {
     try {
         const tareaToShow = await Tarea.findById(req.params.id)
-            .select("-createdAt -updatedAt -__v")
+            .select("-__v")
             .populate("proyecto", "_id nombreProyecto nombreCliente descripcion");
         return res.status(200).json({
             status: true,

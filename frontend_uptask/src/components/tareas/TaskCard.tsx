@@ -15,7 +15,6 @@ const TaskCard = ({task}: TaskCardProps) => {
     const queryClient = useQueryClient();
 
     function deleteTarea(idTask: string) {
-        console.log(`Eliminando tarea con id ${idTask}`);
         deleteTareaMutation.mutate(idTask);
     }
 
@@ -67,6 +66,9 @@ const TaskCard = ({task}: TaskCardProps) => {
                                     <button
                                         type="button"
                                         className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                                        onClick={() => {
+                                            navigate(location.pathname + `?showTask=${task._id}`)
+                                        }}
                                     >
                                         Ver Tarea
                                     </button>

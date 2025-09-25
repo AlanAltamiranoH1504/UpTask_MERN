@@ -4,6 +4,7 @@ import {findProyectoByIdGET} from "../../services/ProyectosService.ts";
 import AddTaskModal from "../../components/tareas/AddTaskModal.tsx";
 import TaskList from "../../components/tareas/TaskList.tsx";
 import EditTaskData from "../../components/tareas/EditTaskData.tsx";
+import TaskModalDetails from "../../components/tareas/TaskModalDetails.tsx";
 
 const DetailsProyectoView = () => {
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ const DetailsProyectoView = () => {
             />
             <AddTaskModal/>
             <EditTaskData/>
+            <TaskModalDetails/>
         </>
     );
 }

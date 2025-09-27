@@ -18,12 +18,22 @@ export type TareaDB = {
     status: string
 }
 
+export type UserDB = {
+    _id: string,
+    nombre: string,
+    apellidos: string,
+    email: string,
+    password: string,
+    token: string,
+}
+
 // TYPES PARA FORMULARIOS
 export type FormCreateProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombreCliente" | "descripcion">
 export type FormEditarProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombreCliente" | "descripcion" | "status">
 export type FormCreateTarea = Pick<TareaDB, "nombre" | "descripcion" | "proyecto" | "status">
 export type FormEditTarea = Pick<TareaDB, "nombre" | "descripcion" | "status" | "_id">
 export type FormEditStatusTarea = Pick<TareaDB, "status" | "_id">
+export type FormConfirmUser = Pick<UserDB, "token">
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

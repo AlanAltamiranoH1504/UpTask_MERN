@@ -43,7 +43,30 @@ const create_user = async (req, res) => {
     }
 }
 
+const confirm_user = async (req, res) => {
+    try {
+        const user_to_confirm = await User.findOne({
+            token: req.body.token
+        });
+
+        user_to_confirm.token = null;
+        user_to_confirm.confirmado = true;
+        await user_to_confirm.save();
+        return res.status(200).json({
+            status: true,
+            message: "Confirmando cuenta de usuario"
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en confirmacion de cuenta de usuario",
+            error: e.message
+        });
+    }
+}
+
 export {
     prueba,
-    create_user
+    create_user,
+    confirm_user
 }

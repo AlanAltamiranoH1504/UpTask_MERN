@@ -1,4 +1,4 @@
-import {body, validationResult} from "express-validator";
+import {body, param, validationResult} from "express-validator";
 import User from "../models/User";
 
 const CreateUserRequest = [
@@ -40,6 +40,45 @@ const CreateUserRequest = [
     }
 ];
 
+const ConfirmUserRequest = [
+    body("token")
+        .notEmpty().withMessage("El token de confirmacion es obligatorio")
+        .isString().withMessage("El token de confirmacion debe ser una cadena de texto"),
+    param("token")
+        .notEmpty().withMessage("El token de confirmacion es obligatorio")
+        .isString().withMessage("El token de confirmacion debe ser una cadena de texto"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(409).json({
+                errors
+            });
+        }
+
+        //Validacion de token de request y de param
+        if (req.body.token !== req.params.token) {
+            return res.status(409).json({
+                status: false,
+                message: "Token de confirmacion corrupto"
+            });
+        }
+
+        //Busqueda de usuario con ese token
+        const token_register = await User.findOne({
+            token: req.body.token
+        });
+        if (!token_register) {
+            return res.status(404).json({
+                status: false,
+                message: "No existe un usuario pendiente de confirmacion con ese token"
+            });
+        }
+        next();
+    }
+];
+
 export {
-    CreateUserRequest
+    CreateUserRequest,
+    ConfirmUserRequest
 }

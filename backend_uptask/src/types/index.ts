@@ -14,3 +14,10 @@ export interface TTarea extends Document  {
     proyecto: Types.ObjectId,
     status: TareaStatus
 }
+
+export type EmailConfirmUser = {
+    nombre: string,
+    email: string,
+    subject: string,
+    token: string
+}

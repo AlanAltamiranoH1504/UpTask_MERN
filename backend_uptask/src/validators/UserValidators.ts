@@ -30,7 +30,6 @@ const CreateUserRequest = [
         const email_in_use = await User.findOne({
             email: req.body.email
         });
-        console.log(email_in_use);
         if (email_in_use) {
             return res.status(422).json({
                 status: false,

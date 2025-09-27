@@ -23,6 +23,7 @@ export type FormCreateProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombre
 export type FormEditarProyectoType = Pick<ProyectoDB, "nombreProyecto" | "nombreCliente" | "descripcion" | "status">
 export type FormCreateTarea = Pick<TareaDB, "nombre" | "descripcion" | "proyecto" | "status">
 export type FormEditTarea = Pick<TareaDB, "nombre" | "descripcion" | "status" | "_id">
+export type FormEditStatusTarea = Pick<TareaDB, "status" | "_id">
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

@@ -1,9 +1,9 @@
-import type {FormCreateTarea, FormEditTarea} from "../types";
+import type {FormCreateTarea, FormEditStatusTarea, FormEditTarea} from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
 import {
     responseCreateTareaAPI,
     responseDeleteTareaAPI,
-    responseFindTareaByIdAPI,
+    responseFindTareaByIdAPI, responseUpdateStatusTareaAPI,
     responseUpdateTareaAPI
 } from "../schemas/TareasSchemas.ts";
 
@@ -44,6 +44,19 @@ export async function updateTareaByIdPUT(data: FormEditTarea) {
         throw new Error("Error en actualización de tarea");
     } catch {
         throw new Error("Error en actualizacion de tarea");
+    }
+}
+
+export async function updateStatusTaskPUT(data: FormEditStatusTarea) {
+    try {
+        const responseAPI = await ClienteAxios.put(`/tareas/${data._id}/update-status`, data);
+        const resultAPI = responseUpdateStatusTareaAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+        throw new Error("Error en actualizacion de estado de tarea");
+    }catch {
+        throw new Error("Error en actualizacion de estado de la tarea");
     }
 }
 

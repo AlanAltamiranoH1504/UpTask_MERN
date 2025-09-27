@@ -65,8 +65,24 @@ const confirm_user = async (req, res) => {
     }
 }
 
+const login_user = async (req, res) => {
+    try {
+        return res.status(200).json({
+            status: true,
+            message: "Usuario logeado correctamente",
+        })
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            messsage: "Ocurrio un error en el login de usuario",
+            error: e.message
+        });
+    }
+}
+
 export {
     prueba,
     create_user,
-    confirm_user
+    confirm_user,
+    login_user
 }

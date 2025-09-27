@@ -1,5 +1,8 @@
 import {body, param, validationResult} from "express-validator";
 import User from "../models/User";
+import {EmailConfirmUser} from "../types";
+import emailConfirmUser from "../emails/EmailConfirmUser";
+import bcrypt from "bcrypt";
 
 const CreateUserRequest = [
     body("nombre")
@@ -78,7 +81,64 @@ const ConfirmUserRequest = [
     }
 ];
 
+const LoginRequest = [
+    body("email")
+        .notEmpty().withMessage("El email del usuario es obligatorio")
+        .isString().withMessage("El email debe ser una cadena de texto")
+        .isEmail().withMessage("Formato de email no valido"),
+    body("password")
+        .notEmpty().withMessage("El password es obligatorio")
+        .isString().withMessage("El password debe ser una cadena de texto"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(409).json({
+                errors
+            });
+        }
+
+        //Validacion de usuario
+        const user_to_found = await User.findOne({
+            email: req.body.email
+        });
+        if (!user_to_found) {
+            return res.status(409).json({
+                status: false,
+                message: "Usuario no registrado con ese email"
+            });
+        }
+
+        //Validacion de confirmacion
+        if (user_to_found.confirmado === false) {
+            const data: EmailConfirmUser = {
+                email: req.body.email,
+                nombre: user_to_found.nombre,
+                subject: "Confirmación de cuenta de usuario",
+                token: user_to_found.token
+            }
+            await emailConfirmUser(data);
+            return res.status(422).json({
+                status: false,
+                message: "Cuenta de usuario no confirmada. Email de confirmacion enviado"
+            });
+        }
+
+        //Validacion de passwords
+        const password_check = await bcrypt.compare(req.body.password, user_to_found.password);
+        if (!password_check) {
+            return res.status(422).json({
+                status: false,
+                message: "Credenciales incorrectas"
+            });
+        }
+
+        next();
+    }
+];
+
 export {
     CreateUserRequest,
-    ConfirmUserRequest
+    ConfirmUserRequest,
+    LoginRequest
 }

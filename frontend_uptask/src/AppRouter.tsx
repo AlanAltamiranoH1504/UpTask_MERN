@@ -7,6 +7,7 @@ import DetailsProyectoView from "./views/proyectos/DetailsProyectoView.tsx";
 import AuthLayout from "./layouts/AuthLayout.tsx";
 import ConfirUserView from "./views/auth/ConfirUserView.tsx";
 import LoginView from "./views/auth/LoginView.tsx";
+import RegisterView from "./views/auth/RegisterView.tsx";
 const AppRouter = () => {
     return (
         <>
@@ -23,6 +24,7 @@ const AppRouter = () => {
                     <Route element={<AuthLayout/>}>
                         <Route path="/auth/confirmar/:token" element={<ConfirUserView/>}></Route>
                         <Route path="/login" element={<LoginView/>}></Route>
+                        <Route path="/registro" element={<RegisterView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

@@ -1,6 +1,6 @@
-import type {FormConfirmUser, FormLogin} from "../types";
+import type {FormConfirmUser, FormLogin, FormRegisterUser} from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
-import {responseConfirmUserAPI, responseLoginUserAPI} from "../schemas/UsersSchemas.ts";
+import {responseConfirmUserAPI, responseLoginUserAPI, responseRegisterUserAPI} from "../schemas/UsersSchemas.ts";
 
 export async function confirmUserPOST(data: FormConfirmUser) {
     // eslint-disable-next-line no-useless-catch
@@ -16,6 +16,7 @@ export async function confirmUserPOST(data: FormConfirmUser) {
 }
 
 export async function loginUserPOST(data: FormLogin) {
+    // eslint-disable-next-line no-useless-catch
     try {
         const responseAPI = await ClienteAxios.post("/users/login", data);
         const resultAPI = responseLoginUserAPI.safeParse(responseAPI.data);
@@ -24,5 +25,18 @@ export async function loginUserPOST(data: FormLogin) {
         }
     } catch (e) {
         throw e
+    }
+}
+
+export async function registerUserPOST(data: FormRegisterUser) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        const responseAPI = await ClienteAxios.post("/users/create_user", data);
+        const resultAPI = responseRegisterUserAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
     }
 }

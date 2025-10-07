@@ -35,6 +35,7 @@ export type FormEditTarea = Pick<TareaDB, "nombre" | "descripcion" | "status" | 
 export type FormEditStatusTarea = Pick<TareaDB, "status" | "_id">
 export type FormConfirmUser = Pick<UserDB, "token">
 export type FormLogin = Pick<UserDB, "email" | "password">
+export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password">
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

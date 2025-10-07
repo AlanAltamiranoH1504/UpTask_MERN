@@ -3,15 +3,14 @@ import type {FormLogin} from "../../types";
 import {useMutation} from "@tanstack/react-query";
 import {loginUserPOST} from "../../services/UsersService.ts";
 import {toast} from "react-toastify";
+import {Link} from "react-router-dom";
 
 const LoginView = () => {
-
     const {register, handleSubmit, formState: {errors}} = useForm<FormLogin>();
 
     function loginFunction(data: FormLogin) {
         loginUserMutation.mutate(data);
     }
-
 
     const loginUserMutation = useMutation({
         mutationKey: ["loginUser"],
@@ -80,6 +79,11 @@ const LoginView = () => {
                     className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full py-2 rounded-lg  text-white font-black  text-xl cursor-pointer"
                 />
             </form>
+
+            <div className="flex justify-around mt-5 font-semibold ">
+                <Link to="/olvide-password">Olvide Password</Link>
+                <Link to="/registro">Crear Cuenta</Link>
+            </div>
         </>
     );
 }

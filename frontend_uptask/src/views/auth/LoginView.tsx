@@ -26,7 +26,11 @@ const LoginView = () => {
 
     return (
         <>
-            <h2 className="my-10 text-3xl text-center font-varela font-semibold">Iniciar Sesion</h2>
+            <h1 className="text-5xl font-black text-black font-varela">Iniciar Sesión</h1>
+            <p className="text-2xl font-light text-black font-varela my-5">
+                Incia Sesión y Administra tus Proyectos en {''}
+                <span className=" text-fuchsia-500 font-bold"> UpTask</span>
+            </p>
             <form
                 onSubmit={handleSubmit(loginFunction)}
                 className="space-y-8 p-10 bg-white font-varela"

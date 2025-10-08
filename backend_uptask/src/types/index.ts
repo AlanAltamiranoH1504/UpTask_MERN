@@ -21,3 +21,10 @@ export type EmailConfirmUser = {
     subject: string,
     token: string
 }
+
+export type EmailResetPassword = {
+    nombre: string,
+    email: string,
+    subject: string,
+    token: string
+}

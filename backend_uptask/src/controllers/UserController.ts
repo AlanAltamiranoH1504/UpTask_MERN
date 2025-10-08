@@ -2,7 +2,9 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import {v4 as uuidv4} from "uuid";
 import emailConfirmUser from "../emails/EmailConfirmUser";
-import {EmailConfirmUser} from "../types";
+import {EmailConfirmUser, EmailResetPassword} from "../types";
+import {response} from "express";
+import {email_reset_password} from "../emails/EmailResetPassword";
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -80,9 +82,39 @@ const login_user = async (req, res) => {
     }
 }
 
+const send_email_reset_password = async (req, res) => {
+    try {
+        const token_reset_password = uuidv4();
+        const user_to_send_email = await User.findOne({
+            email: req.body.email
+        });
+        const data_to_send_email: EmailResetPassword = {
+            nombre: user_to_send_email.nombre + " " + user_to_send_email.apellidos,
+            subject: "Reestablecer password.",
+            email: user_to_send_email.email,
+            token: token_reset_password
+        };
+        await email_reset_password(data_to_send_email);
+        user_to_send_email.token = token_reset_password;
+        await user_to_send_email.save();
+
+        return res.status(200).json({
+            status: true,
+            message: "Email de reset de password enviado correctamente",
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en envio de email para reestablecimiento de password",
+            error: e.message
+        });
+    }
+}
+
 export {
     prueba,
     create_user,
     confirm_user,
-    login_user
+    login_user,
+    send_email_reset_password
 }

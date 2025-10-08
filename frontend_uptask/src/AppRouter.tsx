@@ -8,6 +8,8 @@ import AuthLayout from "./layouts/AuthLayout.tsx";
 import ConfirUserView from "./views/auth/ConfirUserView.tsx";
 import LoginView from "./views/auth/LoginView.tsx";
 import RegisterView from "./views/auth/RegisterView.tsx";
+import SendEmailToResetPasswordView from "./views/auth/SendEmailToResetPasswordView.tsx";
+import ResetPasswordView from "./views/auth/ResetPasswordView.tsx";
 const AppRouter = () => {
     return (
         <>
@@ -25,6 +27,8 @@ const AppRouter = () => {
                         <Route path="/auth/confirmar/:token" element={<ConfirUserView/>}></Route>
                         <Route path="/login" element={<LoginView/>}></Route>
                         <Route path="/registro" element={<RegisterView/>}></Route>
+                        <Route path="/olvide-password" element={<SendEmailToResetPasswordView/>}></Route>
+                        <Route path="/auth/olvide-password/:token" element={<ResetPasswordView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

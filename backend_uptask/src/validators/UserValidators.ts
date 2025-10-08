@@ -137,8 +137,37 @@ const LoginRequest = [
     }
 ];
 
+const SendEmailResetPasswordRequest = [
+    body("email")
+        .notEmpty().withMessage("El email es obligatorio")
+        .isEmail().withMessage("El formato del email no es valido")
+        .isString().withMessage("El email debe ser una cadena de caracteres"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(409).json({
+                errors: errors.array()
+            });
+        }
+
+        //Find User By Email
+        const user = await User.findOne({
+            email: req.body.email
+        });
+        if (!user) {
+            return  res.status(404).json({
+                status: false,
+                message: `No existe un usuario registrado con el email '${req.body.email}'`
+            });
+        }
+        next();
+    }
+];
+
 export {
     CreateUserRequest,
     ConfirmUserRequest,
-    LoginRequest
+    LoginRequest,
+    SendEmailResetPasswordRequest
 }

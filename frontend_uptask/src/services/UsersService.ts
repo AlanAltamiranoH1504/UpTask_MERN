@@ -1,4 +1,4 @@
-import type {FormConfirmUser, FormLogin, FormRegisterUser, FormResetPassword} from "../types";
+import type {FormConfirmUser, FormLogin, FormRegisterUser, FormResetPassword, FormSaveNewPassword} from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
 import {
     responseConfirmUserAPI,
@@ -56,5 +56,18 @@ export async function resetPasswordPOST(data: FormResetPassword) {
         }
     } catch (e) {
         throw e;
+    }
+}
+
+export async function saveNewPasswordPOST(data: FormSaveNewPassword) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        const responseAPI = await ClienteAxios.post("/users/reset_password", data);
+        const resultAPI = responseResetPasswordAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e
     }
 }

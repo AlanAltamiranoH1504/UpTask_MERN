@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import {v4 as uuidv4} from "uuid";
 import emailConfirmUser from "../emails/EmailConfirmUser";
 import {EmailConfirmUser, EmailResetPassword} from "../types";
-import {response} from "express";
 import {email_reset_password} from "../emails/EmailResetPassword";
 
 const prueba = (req, res) => {
@@ -111,10 +110,36 @@ const send_email_reset_password = async (req, res) => {
     }
 }
 
+const reset_password = async (req, res) => {
+    try {
+        const {new_password, token} = req.body;
+        const new_password_hash = await bcrypt.hash(new_password, 10);
+        const user_to_reset_password = await User.findOne({
+            token: token
+        });
+        user_to_reset_password.password = new_password_hash;
+        user_to_reset_password.token = null;
+        await user_to_reset_password.save();
+
+        return res.status(200).json({
+            status: true,
+            message: "Password actualizada correctamente"
+        });
+
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en guardado de nuevo password",
+            error: e.message
+        });
+    }
+}
+
 export {
     prueba,
     create_user,
     confirm_user,
     login_user,
-    send_email_reset_password
+    send_email_reset_password,
+    reset_password
 }

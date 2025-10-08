@@ -156,10 +156,40 @@ const SendEmailResetPasswordRequest = [
             email: req.body.email
         });
         if (!user) {
-            return  res.status(404).json({
+            return res.status(404).json({
                 status: false,
                 message: `No existe un usuario registrado con el email '${req.body.email}'`
             });
+        }
+        next();
+    }
+];
+
+const ResetPasswordRequest = [
+    body("token")
+        .notEmpty().withMessage("Token de reset de password obligatorio")
+        .isString().withMessage("Token de reset de password no valido"),
+    body("new_password")
+        .notEmpty().withMessage("El password es obligatorio")
+        .isString().withMessage("El password debe ser una cadena de caracteres")
+        .isLength({min: 5}).withMessage("El password debe tener al menos 5 caracteres"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(404).json({
+                errors: errors.array()
+            });
+        }
+        //User to reset password
+        const user_to_reset_password = await User.findOne({
+            token: req.body.token
+        });
+        if (!user_to_reset_password) {
+            return res.status(404).json({
+                status: false,
+                message: "Error en busqueda de usuario para reset de password"
+            })
         }
         next();
     }
@@ -169,5 +199,6 @@ export {
     CreateUserRequest,
     ConfirmUserRequest,
     LoginRequest,
-    SendEmailResetPasswordRequest
+    SendEmailResetPasswordRequest,
+    ResetPasswordRequest
 }

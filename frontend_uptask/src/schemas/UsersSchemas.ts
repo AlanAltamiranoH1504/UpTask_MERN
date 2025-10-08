@@ -17,4 +17,8 @@ export const responseRegisterUserAPI = z.object({
 export const responseResetPasswordAPI = z.object({
     status: z.boolean(),
     message: z.string()
-})
+});
+export const responseSaveNewPasswordAPI = z.object({
+    status: z.boolean(),
+    message: z.string()
+});

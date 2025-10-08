@@ -37,6 +37,11 @@ export type FormConfirmUser = Pick<UserDB, "token">
 export type FormLogin = Pick<UserDB, "email" | "password">
 export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password">
 export type FormResetPassword = Pick<UserDB, "email">
+export type FormSaveNewPassword = {
+    new_password: string,
+    token: string,
+    confrm_password: string,
+}
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

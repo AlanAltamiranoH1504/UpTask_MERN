@@ -1,5 +1,6 @@
 import {z} from "zod"
 import type {responseFindProyectoById} from "../schemas/ProyectosSchemas.ts";
+import type {responseShowUserAPI} from "../schemas/UsersSchemas.ts";
 
 // TYPES PARA DATOS DE LA DB
 export type ProyectoDB = {
@@ -45,3 +46,4 @@ export type FormSaveNewPassword = {
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>
+export type ShowUserInfer = z.infer<typeof responseShowUserAPI>

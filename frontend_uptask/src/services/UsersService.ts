@@ -2,10 +2,11 @@ import type {FormConfirmUser, FormLogin, FormRegisterUser, FormResetPassword, Fo
 import ClienteAxios from "../axios/ClienteAxios.ts";
 import {
     responseConfirmUserAPI,
-    responseLoginUserAPI,
+    responseLoginUserAPI, responseLogoutUserAPI,
     responseRegisterUserAPI,
-    responseResetPasswordAPI
+    responseResetPasswordAPI, responseShowUserAPI
 } from "../schemas/UsersSchemas.ts";
+import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
 
 export async function confirmUserPOST(data: FormConfirmUser) {
     // eslint-disable-next-line no-useless-catch
@@ -69,5 +70,38 @@ export async function saveNewPasswordPOST(data: FormSaveNewPassword) {
         }
     } catch (e) {
         throw e
+    }
+}
+
+export async function showUserGET() {
+    try {
+        const responseAPI = await ClienteAxios.get("/users/show_user", {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseShowUserAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function logoutUserGET() {
+    try {
+        const responseAPI = await ClienteAxios.get("/users/logout_user", {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseLogoutUserAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            localStorage.removeItem("jwt_uptask");
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
     }
 }

@@ -22,3 +22,15 @@ export const responseSaveNewPasswordAPI = z.object({
     status: z.boolean(),
     message: z.string()
 });
+export const responseShowUserAPI = z.object({
+    status: z.boolean(),
+    user: z.object({
+        _id: z.string(),
+        nombre: z.string(),
+        apellidos: z.string(),
+        email: z.string()
+    })
+});
+export const responseLogoutUserAPI = z.object({
+    status: z.boolean()
+});

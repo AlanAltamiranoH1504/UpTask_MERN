@@ -148,11 +148,43 @@ const reset_password = async (req, res) => {
     }
 }
 
+const show_user = async (req, res) => {
+    try {
+        const user_to_show = req.user;
+        return res.status(200).json({
+            status: true,
+            user: user_to_show
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en busqueda de usuario",
+            error: e.message
+        });
+    }
+}
+
+const logout_user = (req, res) => {
+    try {
+        req.user = null;
+        return res.status(200).json({
+            status: true,
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en logout de usuario",
+        });
+    }
+}
+
 export {
     prueba,
     create_user,
     confirm_user,
     login_user,
     send_email_reset_password,
-    reset_password
+    reset_password,
+    show_user,
+    logout_user
 }

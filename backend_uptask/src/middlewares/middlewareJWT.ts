@@ -31,7 +31,7 @@ export const middlewareJWT = async (req, res, next) => {
         const userInSesion = await User.findOne({
             email,
             _id: id
-        });
+        }).select("_id nombre apellidos email");
 
         if (!userInSesion) {
             throw new Error("Error en identificación de usuario por JWT");

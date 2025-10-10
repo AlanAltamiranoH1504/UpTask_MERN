@@ -7,13 +7,14 @@ import {
     saveProyecto,
     updateProyecto
 } from "../controllers/ProyectoController";
+import {middlewareJWT} from "../middlewares/middlewareJWT";
 
 const router = express.Router();
 
-router.get("", findAllProyectos);
-router.get("/:id", ShowProyectoById, findProyectoById);
-router.get("/:id/tareas", ShowProyectoById, findAllTareasByProyectoId);
-router.post("", CreateProyectoRequest, saveProyecto);
-router.put("/:id", ShowProyectoById, UpdateProyectoRequest, updateProyecto);
-router.delete("/:id", ShowProyectoById, deleteProyecto);
+router.get("", middlewareJWT, findAllProyectos);
+router.get("/:id", middlewareJWT, ShowProyectoById, findProyectoById);
+router.get("/:id/tareas", middlewareJWT, ShowProyectoById, findAllTareasByProyectoId);
+router.post("", middlewareJWT, CreateProyectoRequest, saveProyecto);
+router.put("/:id", middlewareJWT, ShowProyectoById, UpdateProyectoRequest, updateProyecto);
+router.delete("/:id", middlewareJWT, ShowProyectoById, deleteProyecto);
 export default router;

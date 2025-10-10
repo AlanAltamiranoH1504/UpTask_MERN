@@ -6,11 +6,16 @@ import {
     responseFindTareaByIdAPI, responseUpdateStatusTareaAPI,
     responseUpdateTareaAPI
 } from "../schemas/TareasSchemas.ts";
+import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
 
 export async function createTareaPOST(tarea: FormCreateTarea) {
     // eslint-disable-next-line no-useless-catch
     try {
-        const responseAPI = await ClienteAxios.post(`/tareas/${tarea.proyecto}/create`, tarea);
+        const responseAPI = await ClienteAxios.post(`/tareas/${tarea.proyecto}/create`, tarea, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
         const resultAPI = responseCreateTareaAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
@@ -22,7 +27,11 @@ export async function createTareaPOST(tarea: FormCreateTarea) {
 
 export async function findTareaaByIdGET(idTarea: string) {
     try {
-        const responseAPI = await ClienteAxios.get(`/tareas/${idTarea}`);
+        const responseAPI = await ClienteAxios.get(`/tareas/${idTarea}`, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
         const resultAPI = responseFindTareaByIdAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
@@ -36,7 +45,11 @@ export async function findTareaaByIdGET(idTarea: string) {
 
 export async function updateTareaByIdPUT(data: FormEditTarea) {
     try {
-        const responseAPI = await ClienteAxios.put(`/tareas/${data._id}/update`, data);
+        const responseAPI = await ClienteAxios.put(`/tareas/${data._id}/update`, data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
         const resultAPI = responseUpdateTareaAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
@@ -49,7 +62,11 @@ export async function updateTareaByIdPUT(data: FormEditTarea) {
 
 export async function updateStatusTaskPUT(data: FormEditStatusTarea) {
     try {
-        const responseAPI = await ClienteAxios.put(`/tareas/${data._id}/update-status`, data);
+        const responseAPI = await ClienteAxios.put(`/tareas/${data._id}/update-status`, data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
         const resultAPI = responseUpdateStatusTareaAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
@@ -62,7 +79,11 @@ export async function updateStatusTaskPUT(data: FormEditStatusTarea) {
 
 export async function deleteTareaByIdDELETE(idTask: string) {
     try {
-        const responseAPI = await ClienteAxios.delete(`/tareas/${idTask}/delete`);
+        const responseAPI = await ClienteAxios.delete(`/tareas/${idTask}/delete`, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
         const resultAPI = responseDeleteTareaAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;

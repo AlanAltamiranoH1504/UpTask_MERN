@@ -65,6 +65,14 @@ const ShowProyectoById = [
                 message: `El proyecto con el id ${req.params.id} no existe o se encuentra deshabilitado`
             });
         }
+
+        if (existenciaProyecto.usuario.toString() !== req.user._id.toString()) {
+            return res.status(401).json({
+                status: false,
+                message: "Permisos denegados"
+            });
+        }
+
         next();
     }
 ];
@@ -104,6 +112,7 @@ const UpdateProyectoRequest = [
         const nombreInUse = await Proyecto.findOne({
             nombreProyecto: req.body.nombreProyecto
         });
+
         if (nombreInUse && !nombreInUse._id.equals(req.params.id)) {
             return res.status(409).json({
                 status: false,

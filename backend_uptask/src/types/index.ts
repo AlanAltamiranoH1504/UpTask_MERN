@@ -28,3 +28,9 @@ export type EmailResetPassword = {
     subject: string,
     token: string
 }
+export type GenerateJWT = {
+    id: string;
+    nombre: string;
+    email: string;
+    rol: number;
+}

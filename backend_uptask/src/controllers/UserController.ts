@@ -2,13 +2,14 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import {v4 as uuidv4} from "uuid";
 import emailConfirmUser from "../emails/EmailConfirmUser";
-import {EmailConfirmUser, EmailResetPassword} from "../types";
+import {EmailConfirmUser, EmailResetPassword, GenerateJWT} from "../types";
 import {email_reset_password} from "../emails/EmailResetPassword";
+import {generateJWT} from "../helpers/helpers";
 
 const prueba = (req, res) => {
     return res.status(200).json({
         status: true,
-        message: "Funcionando controlador de usuarios"
+        message: "Funcionando controlador de usuarios con ruta protegida"
     });
 }
 
@@ -68,9 +69,21 @@ const confirm_user = async (req, res) => {
 
 const login_user = async (req, res) => {
     try {
+        const userInSession = await User.findOne({
+            email: req.body.email
+        });
+
+        const dataToGenerateJWT: GenerateJWT = {
+            nombre: userInSession.nombre,
+            id: userInSession._id.toString(),
+            email: userInSession.email,
+            rol: 1
+        }
+        const jwt = generateJWT(dataToGenerateJWT);
+
         return res.status(200).json({
             status: true,
-            message: "Usuario logeado correctamente",
+            token: jwt
         })
     } catch (e) {
         return res.status(500).json({

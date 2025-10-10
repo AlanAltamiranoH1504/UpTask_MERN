@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 
 const DashBoardView = () => {
     const queryCliente = useQueryClient();
-    const {data, isLoading, isError} = useQuery({
+    const {data, isLoading, isError, error} = useQuery({
         queryKey: ["findAllProyectos"],
         queryFn: () => findAllProyectosGET(),
         retry: false,
@@ -38,7 +38,8 @@ const DashBoardView = () => {
         return <div>Loading...</div>;
     }
     if (isError) {
-        return <div>Something went wrong.</div>;
+        // @ts-ignore
+        return <div>Something went wrong. {error.response.data.message}</div>;
     }
 
     if (data) return (

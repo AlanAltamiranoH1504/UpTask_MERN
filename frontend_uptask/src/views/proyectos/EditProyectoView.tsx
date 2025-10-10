@@ -6,7 +6,7 @@ import {Link, useParams} from "react-router-dom";
 const EditProyectoView = () => {
     const params = useParams();
     const idProyecto: string | undefined = params.id;
-    const {data, isLoading, isError} = useQuery({
+    const {data, isLoading, isError, error} = useQuery({
         queryKey: ["findProyectoById"],
         queryFn: () => findProyectoByIdGET(idProyecto ?? ""),
         retry: false,
@@ -16,7 +16,8 @@ const EditProyectoView = () => {
         return <div>Loading...</div>;
     }
     if (isError) {
-        return <div>Ocurrio algun error en la busqueda</div>;
+        // @ts-ignore
+        return <div className="font-varela text-center font-semibold text-2xl">Ocurrio algun error en la busqueda: {error.response.data.message} {error.response.status}</div>;
     }
     if (data) return (
         <>

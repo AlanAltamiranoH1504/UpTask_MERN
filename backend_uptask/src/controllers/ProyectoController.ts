@@ -3,14 +3,10 @@ import Proyecto from "../models/Proyecto";
 const findAllProyectos = async (request, response) => {
     try {
         const proyectos = await Proyecto.find({
-            status: true
-        });
-        // if (proyectos.length <= 0) {
-        //     return response.status(404).json({
-        //         status: false,
-        //         message: "No se encontraron proyectos registrados"
-        //     }, 404);
-        // }
+            status: true,
+            usuario: request.user._id
+        }).populate("usuario", "_id nombre apellidos email");
+
         return response.status(200).json({
             status: true,
             proyectos: proyectos
@@ -26,7 +22,11 @@ const findAllProyectos = async (request, response) => {
 
 const findProyectoById = async (req, res) => {
     try {
-        const proyectoToShow = await Proyecto.findById(req.params.id)
+        const proyectoToShow = await Proyecto.findOne({
+            _id:req.params.id,
+            usuario: req.user._id,
+            status: true
+        })
             .select("-__v -createdAt -updatedAt")
             .populate("tareas", "_id nombre descripcion status proyecto");
         return res.status(200).json({
@@ -65,7 +65,8 @@ const saveProyecto = async (req, res) => {
         const proyectoToCreate = await Proyecto.create({
             nombreProyecto: req.body.nombreProyecto,
             nombreCliente: req.body.nombreCliente,
-            descripcion: req.body.descripcion
+            descripcion: req.body.descripcion,
+            usuario: req.user._id
         });
         return res.status(201).json({
             status: true,

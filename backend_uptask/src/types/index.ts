@@ -5,6 +5,7 @@ export interface TProyecto extends Document {
     nombreProyecto: string,
     nombreCliente: string,
     descripcion: string,
+    usuario: string,
     tareas: PopulatedDoc<TTarea & Document>[]
 }
 export interface TTarea extends Document  {

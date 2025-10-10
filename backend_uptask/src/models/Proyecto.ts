@@ -23,6 +23,11 @@ const proyectoSchema = new Schema({
         required: true,
         default: true
     },
+    usuario:{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     tareas: [
         {
             type: Schema.Types.ObjectId,

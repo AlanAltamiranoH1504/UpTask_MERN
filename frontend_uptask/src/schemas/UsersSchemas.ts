@@ -7,7 +7,7 @@ export const responseConfirmUserAPI = z.object({
 
 export const responseLoginUserAPI = z.object({
     status: z.boolean(),
-    message: z.string()
+    token: z.string()
 });
 
 export const responseRegisterUserAPI = z.object({

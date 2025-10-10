@@ -3,10 +3,11 @@ import type {FormLogin} from "../../types";
 import {useMutation} from "@tanstack/react-query";
 import {loginUserPOST} from "../../services/UsersService.ts";
 import {toast} from "react-toastify";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const LoginView = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormLogin>();
+    const navigate = useNavigate();
 
     function loginFunction(data: FormLogin) {
         loginUserMutation.mutate(data);
@@ -16,7 +17,10 @@ const LoginView = () => {
         mutationKey: ["loginUser"],
         mutationFn: loginUserPOST,
         onSuccess: (data) => {
+            localStorage.setItem("jwt_uptask", data!.token);
             toast.success("Login correcto");
+            navigate("/");
+
         },
         onError: (error) => {
             // @ts-ignore

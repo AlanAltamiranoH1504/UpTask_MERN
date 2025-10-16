@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {TProyecto} from "../types";
 const {Schema, Document} = mongoose;
-const proyectoSchema = new Schema({
+const proyectoSchema = new Schema<TProyecto>({
     nombreProyecto: {
         type: String,
         required: true,
@@ -20,11 +20,10 @@ const proyectoSchema = new Schema({
     },
     status: {
         type: Boolean,
-        required: true,
         default: true
     },
     usuario:{
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
@@ -32,6 +31,12 @@ const proyectoSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: "Tarea"
+        }
+    ],
+    equipo: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     ]
 },{timestamps: true});

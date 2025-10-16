@@ -1,13 +1,17 @@
 import mongoose, {Types, ObjectId, Document, PopulatedDoc} from "mongoose";
 import {TareaStatus} from "../models/Tarea";
 
+// * Interfaces de modelos de moongse
+
 export interface TProyecto extends Document {
     _id: Types.ObjectId,
     nombreProyecto: string,
     nombreCliente: string,
     descripcion: string,
-    usuario: string,
+    status: boolean,
+    usuario: Types.ObjectId,
     tareas: PopulatedDoc<TTarea & Document>[]
+    equipo: PopulatedDoc<IUsuario & Document>[]
 }
 
 export interface TTarea extends Document {

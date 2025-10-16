@@ -141,11 +141,19 @@ const search_member = async (req, res) => {
 const add_to_member_to_team = async (req, res) => {
     try {
         const {id} = req.params;
-        const project_to_show = await Proyecto.findByIdAndUpdate(id, {
-            $push: {
-                equipo: req.body.id
-            }
+
+        const project_to_update = await Proyecto.findById(id);
+        const exists_member = project_to_update.equipo.filter((member) => {
+            return member._id.toString() === req.body.id
         });
+        if (exists_member.length > 0) {
+            return res.status(409).json({
+                status: false,
+                message: "El miembro ya se encontraba agregado al proyecto."
+            });
+        }
+        project_to_update.equipo.push(req.body.id);
+        await project_to_update.save();
 
         return res.status(200).json({
             status: true,

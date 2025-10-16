@@ -46,4 +46,36 @@ export const responseFindProyectoById = z.object({
             status: z.string()
         }))
     })
-})
+});
+
+export const responseFindMembers = z.object({
+    status: z.boolean(),
+    members: z.object({
+        nombreProyecto: z.string(),
+        nombreCliente: z.string(),
+        descripcion: z.string(),
+        equipo: z.array(
+            z.object({
+                _id: z.string(),
+                nombre: z.string(),
+                apellidos: z.string(),
+                email: z.string(),
+            })
+        )
+    })
+});
+
+export const responseSearchMember = z.object({
+    status: z.boolean(),
+    usuarios: z.object({
+        _id: z.string(),
+        nombre: z.string(),
+        apellidos: z.string(),
+        email: z.string(),
+    })
+});
+
+export const responseAddMemberTeam = z.object({
+    status: z.boolean(),
+    message: z.string(),
+});

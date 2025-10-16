@@ -1,5 +1,5 @@
 import {z} from "zod"
-import type {responseFindProyectoById} from "../schemas/ProyectosSchemas.ts";
+import {type responseFindProyectoById, responseSearchMember} from "../schemas/ProyectosSchemas.ts";
 import type {responseShowUserAPI} from "../schemas/UsersSchemas.ts";
 
 // TYPES PARA DATOS DE LA DB
@@ -38,6 +38,10 @@ export type FormConfirmUser = Pick<UserDB, "token">
 export type FormLogin = Pick<UserDB, "email" | "password">
 export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password">
 export type FormResetPassword = Pick<UserDB, "email">
+export type FormSearchMembers = {
+    email: Pick<UserDB, "email">,
+    _id: string
+}
 export type FormSaveNewPassword = {
     new_password: string,
     token: string,
@@ -47,3 +51,4 @@ export type FormSaveNewPassword = {
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>
 export type ShowUserInfer = z.infer<typeof responseShowUserAPI>
+export type SearchMemberResult = z.infer<typeof responseSearchMember>

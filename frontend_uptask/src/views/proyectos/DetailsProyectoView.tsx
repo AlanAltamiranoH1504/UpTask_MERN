@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {findProyectoByIdGET} from "../../services/ProyectosService.ts";
 import AddTaskModal from "../../components/tareas/AddTaskModal.tsx";
@@ -33,9 +33,12 @@ const DetailsProyectoView = () => {
             <nav className="my-5 flex gap-3">
                 <button type="button"
                         onClick={() => navigate("?newTask=true")}
-                        className="bg-purple-400 hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
+                        className="bg-purple-400 font-varela hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
                 >Agregar Tarea
                 </button>
+                <Link
+                    to={`/proyectos/${data.proyecto._id}/equipo`}
+                    className="bg-emerald-500 font-varela hover:bg-emerald-600 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer">Colaboradores</Link>
             </nav>
             <TaskList
                 tareas={data.proyecto.tareas}

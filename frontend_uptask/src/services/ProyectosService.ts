@@ -1,11 +1,11 @@
-import type {FormCreateProyectoType, FormSearchMembers, ProyectoDB} from "../types";
+import type {DataToRemoveMember, FormCreateProyectoType, FormSearchMembers, ProyectoDB} from "../types";
 import clienteAxios from "../axios/ClienteAxios.ts";
 import {
     responseAddMemberTeam,
     responseCreateProyecto,
     responseDeleteProyecto,
     responseFindAllProyectos, responseFindMembers,
-    responseFindProyectoById, responseSearchMember, responseUpdateProyecto
+    responseFindProyectoById, responseRemoveMemberTeam, responseSearchMember, responseUpdateProyecto
 } from "../schemas/ProyectosSchemas.ts";
 import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
 import type {DataAddMember} from "../components/proyectos/members/SearchResult.tsx";
@@ -139,6 +139,23 @@ export async function addMemberTeamPOST(data: DataAddMember) {
             }
         });
         const resultAPI = responseAddMemberTeam.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function removeMemberTeamPOST(data: DataToRemoveMember) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        const responseAPI = await clienteAxios.post(`/proyectos/${data.idProject}/equipo/eliminado`, data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseRemoveMemberTeam.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
         }

@@ -79,3 +79,8 @@ export const responseAddMemberTeam = z.object({
     status: z.boolean(),
     message: z.string(),
 });
+
+export const responseRemoveMemberTeam = z.object({
+    status: z.boolean(),
+    message: z.string()
+});

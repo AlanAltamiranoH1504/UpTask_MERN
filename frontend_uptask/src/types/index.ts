@@ -47,6 +47,11 @@ export type FormSaveNewPassword = {
     token: string,
     confrm_password: string,
 }
+export type DataToRemoveMember = {
+    id: string,
+    idProject: string,
+    email: string
+}
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

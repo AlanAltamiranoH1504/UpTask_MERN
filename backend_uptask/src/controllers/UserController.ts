@@ -15,7 +15,7 @@ const prueba = (req, res) => {
 
 const create_user = async (req, res) => {
     try {
-        const {nombre, apellidos, email, password} = req.body;
+        const {nombre, apellidos, email, password, empresa} = req.body;
         const password_hash = await bcrypt.hash(password, 10);
         const token = uuidv4();
         const user_to_create = await User.create({
@@ -24,6 +24,7 @@ const create_user = async (req, res) => {
             email,
             token,
             password: password_hash,
+            empresa
         });
         const DataEmailConfirmUser: EmailConfirmUser = {
             email,

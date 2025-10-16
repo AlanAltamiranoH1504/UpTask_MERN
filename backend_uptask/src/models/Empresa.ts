@@ -1,4 +1,4 @@
-import mongoose, {Schema, model} from "mongoose";
+import mongoose, {Schema, model, mongo} from "mongoose";
 import {IEmpresa} from "../types";
 
 const empresaSchema = new Schema<IEmpresa>({
@@ -21,7 +21,13 @@ const empresaSchema = new Schema<IEmpresa>({
     status: {
         type: Boolean,
         default: true
-    }
+    },
+    usuarios: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            return: "User"
+        }
+    ]
 }, {
     timestamps: true
 });

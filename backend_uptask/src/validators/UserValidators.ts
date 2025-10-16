@@ -3,6 +3,7 @@ import User from "../models/User";
 import {EmailConfirmUser} from "../types";
 import emailConfirmUser from "../emails/EmailConfirmUser";
 import bcrypt from "bcrypt";
+import {Empresa} from "../models/Empresa";
 
 const CreateUserRequest = [
     body("nombre")
@@ -21,12 +22,26 @@ const CreateUserRequest = [
         .notEmpty().withMessage("El password es obligatorio")
         .isString().withMessage("El password debe ser una cadena de caracteres")
         .isLength({min: 6}).withMessage("El password debe tener al menos 6 caracteres"),
+    body("empresa")
+        .notEmpty().withMessage("La empresa asociada es obligatoria")
+        .isString().withMessage("La empresa no es valida"),
 
     async (req, res, next) => {
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
             return res.status(409).json({
                 errores
+            });
+        }
+
+        const empresa_to_found = await Empresa.findOne({
+            _id: req.body.empresa,
+            status: true
+        });
+        if (!empresa_to_found) {
+            return res.status(404).json({
+                status: false,
+                message: "Empresa no registrada."
             });
         }
 

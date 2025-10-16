@@ -19,7 +19,6 @@ export interface TTarea extends Document {
 }
 
 export interface IUsuario extends Document {
-    _id: Types.ObjectId,
     nombre: string,
     apellidos: string,
     email: string,
@@ -35,6 +34,7 @@ export interface IEmpresa extends Document {
     razon_social: string,
     email: string,
     status: boolean
+    usuarios: PopulatedDoc<IUsuario & Document>[]
 }
 
 export type EmailConfirmUser = {

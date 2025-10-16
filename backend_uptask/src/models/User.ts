@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
+import {IUsuario} from "../types";
 const {Schema} = mongoose;
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<IUsuario>({
     nombre: {
         type: String,
         required: true,
@@ -31,7 +32,12 @@ const UserSchema = new Schema({
     confirmado: {
         type: Boolean,
         default: false,
+    },
+    empresa: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Empresa",
+        required: true
     }
 }, {timestamps: true});
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model<IUsuario>("User", UserSchema);
 export default User;

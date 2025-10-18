@@ -1,10 +1,11 @@
 import {body, param, validationResult} from "express-validator";
 import User from "../models/User";
-import {EmailConfirmUser} from "../types";
+import {EmailConfirmEmpresa, EmailConfirmUser} from "../types";
 import emailConfirmUser from "../emails/EmailConfirmUser";
 import bcrypt from "bcrypt";
 import {Empresa} from "../models/Empresa";
 import {Rol} from "../models/Rol";
+import {email_confirm_empresa} from "../emails/EmailConfirmEmpresa";
 
 const CreateUserRequest = [
     body("nombre")
@@ -26,9 +27,9 @@ const CreateUserRequest = [
     body("empresa")
         .notEmpty().withMessage("La empresa asociada es obligatoria")
         .isString().withMessage("La empresa no es valida"),
-    body("rol")
-        .notEmpty().withMessage("El rol del usuario es obligatorio")
-        .isString().withMessage("El id del rol no es valido"),
+    // body("rol")
+    //     .notEmpty().withMessage("El rol del usuario es obligatorio")
+    //     .isString().withMessage("El id del rol no es valido"),
 
     async (req, res, next) => {
         const errores = validationResult(req);
@@ -50,16 +51,16 @@ const CreateUserRequest = [
         }
 
         // * Busqueda de rol en la db
-        const rol_to_found = await Rol.findOne({
-            _id: req.body.rol,
-            empresa: req.body.empresa
-        });
-        if (!rol_to_found) {
-            return res.status(404).json({
-                status: false,
-                message: "El rol no se encuentra registrado"
-            });
-        }
+        // const rol_to_found = await Rol.findOne({
+        //     _id: req.body.rol,
+        //     empresa: req.body.empresa
+        // });
+        // if (!rol_to_found) {
+        //     return res.status(404).json({
+        //         status: false,
+        //         message: "El rol no se encuentra registrado"
+        //     });
+        // }
 
         const email_in_use = await User.findOne({
             email: req.body.email
@@ -137,6 +138,13 @@ const LoginRequest = [
             return res.status(409).json({
                 status: false,
                 message: "Usuario no registrado con ese email"
+            });
+        }
+
+        if (!user_to_found.confirmado_empresa) {
+            return res.status(409).json({
+                status: false,
+                message: "Tu usuario aun no ha sido confirmado por tu empresa. Espera a que lo confirme."
             });
         }
 

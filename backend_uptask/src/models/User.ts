@@ -33,6 +33,10 @@ const UserSchema = new Schema<IUsuario>({
         type: Boolean,
         default: false,
     },
+    confirmado_empresa: {
+        type: Boolean,
+        default: false,
+    },
     empresa: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Empresa",
@@ -40,8 +44,7 @@ const UserSchema = new Schema<IUsuario>({
     },
     rol: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Rol",
-        required: true
+        ref: "Rol"
     }
 }, {timestamps: true});
 const User = mongoose.model<IUsuario>("User", UserSchema);

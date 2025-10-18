@@ -29,6 +29,7 @@ export interface IUsuario extends Document {
     password: string,
     token: string,
     confirmado: boolean,
+    confirmado_empresa: boolean,
     empresa: Types.ObjectId,
     rol: Types.ObjectId
 }
@@ -53,6 +54,19 @@ export type EmailConfirmUser = {
     email: string,
     subject: string,
     token: string
+}
+
+export type EmailConfirmEmpresa = {
+    nombre_empresa: string,
+    email_empresa: string,
+    subject: string,
+    email_usuario: string,
+    id_ususario: mongoose.Schema.Types.ObjectId
+}
+
+export type EmailConfirmUserByCompany = {
+    email_user: string,
+    subject: string
 }
 
 export type EmailResetPassword = {

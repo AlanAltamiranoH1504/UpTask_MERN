@@ -26,6 +26,9 @@ export type UserDB = {
     email: string,
     password: string,
     token: string,
+    confirmado: boolean,
+    empresa: string,
+    rol: string
 }
 
 // TYPES PARA FORMULARIOS
@@ -36,7 +39,7 @@ export type FormEditTarea = Pick<TareaDB, "nombre" | "descripcion" | "status" | 
 export type FormEditStatusTarea = Pick<TareaDB, "status" | "_id">
 export type FormConfirmUser = Pick<UserDB, "token">
 export type FormLogin = Pick<UserDB, "email" | "password">
-export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password">
+export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password" | "empresa">
 export type FormResetPassword = Pick<UserDB, "email">
 export type FormSearchMembers = {
     email: Pick<UserDB, "email">,

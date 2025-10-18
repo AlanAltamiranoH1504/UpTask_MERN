@@ -2,9 +2,11 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import {v4 as uuidv4} from "uuid";
 import emailConfirmUser from "../emails/EmailConfirmUser";
-import {EmailConfirmUser, EmailResetPassword, GenerateJWT} from "../types";
+import {EmailConfirmEmpresa, EmailConfirmUser, EmailResetPassword, GenerateJWT} from "../types";
 import {email_reset_password} from "../emails/EmailResetPassword";
 import {generateJWT} from "../helpers/helpers";
+import {Empresa} from "../models/Empresa";
+import {email_confirm_empresa} from "../emails/EmailConfirmEmpresa";
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -27,13 +29,28 @@ const create_user = async (req, res) => {
             empresa,
             rol
         });
+
+        const empresa_to_notificate = await Empresa.findById(empresa);
+
         const DataEmailConfirmUser: EmailConfirmUser = {
             email,
             nombre,
             subject: "Confirma tu Cuenta en UpTask",
             token
         }
+
+        const DataEmailConfirmEmpresa: EmailConfirmEmpresa = {
+            email_usuario: email,
+            subject: "Confirma a tu Colaborador en UpTask",
+            email_empresa: empresa_to_notificate.email,
+            nombre_empresa: empresa_to_notificate.nombre,
+            id_ususario: user_to_create.id
+        }
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         await emailConfirmUser(DataEmailConfirmUser);
+        await sleep(10000);
+        await email_confirm_empresa(DataEmailConfirmEmpresa);
+
         return res.status(201).json({
             status: true,
             message: "Usuario creado correctamente. Confirma tu cuenta en tu email",

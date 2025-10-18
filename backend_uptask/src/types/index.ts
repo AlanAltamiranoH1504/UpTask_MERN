@@ -29,7 +29,8 @@ export interface IUsuario extends Document {
     password: string,
     token: string,
     confirmado: boolean,
-    empresa: Types.ObjectId
+    empresa: Types.ObjectId,
+    rol: Types.ObjectId
 }
 
 export interface IRol extends Document {
@@ -64,5 +65,5 @@ export type GenerateJWT = {
     id: string;
     nombre: string;
     email: string;
-    rol: number;
+    rol: Types.ObjectId;
 }

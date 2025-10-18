@@ -4,6 +4,7 @@ import {EmailConfirmUser} from "../types";
 import emailConfirmUser from "../emails/EmailConfirmUser";
 import bcrypt from "bcrypt";
 import {Empresa} from "../models/Empresa";
+import {Rol} from "../models/Rol";
 
 const CreateUserRequest = [
     body("nombre")
@@ -25,6 +26,9 @@ const CreateUserRequest = [
     body("empresa")
         .notEmpty().withMessage("La empresa asociada es obligatoria")
         .isString().withMessage("La empresa no es valida"),
+    body("rol")
+        .notEmpty().withMessage("El rol del usuario es obligatorio")
+        .isString().withMessage("El id del rol no es valido"),
 
     async (req, res, next) => {
         const errores = validationResult(req);
@@ -42,6 +46,18 @@ const CreateUserRequest = [
             return res.status(404).json({
                 status: false,
                 message: "Empresa no registrada."
+            });
+        }
+
+        // * Busqueda de rol en la db
+        const rol_to_found = await Rol.findOne({
+            _id: req.body.rol,
+            empresa: req.body.empresa
+        });
+        if (!rol_to_found) {
+            return res.status(404).json({
+                status: false,
+                message: "El rol no se encuentra registrado"
             });
         }
 

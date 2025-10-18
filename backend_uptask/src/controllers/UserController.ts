@@ -15,7 +15,7 @@ const prueba = (req, res) => {
 
 const create_user = async (req, res) => {
     try {
-        const {nombre, apellidos, email, password, empresa} = req.body;
+        const {nombre, apellidos, email, password, empresa, rol} = req.body;
         const password_hash = await bcrypt.hash(password, 10);
         const token = uuidv4();
         const user_to_create = await User.create({
@@ -24,7 +24,8 @@ const create_user = async (req, res) => {
             email,
             token,
             password: password_hash,
-            empresa
+            empresa,
+            rol
         });
         const DataEmailConfirmUser: EmailConfirmUser = {
             email,
@@ -78,7 +79,7 @@ const login_user = async (req, res) => {
             nombre: userInSession.nombre,
             id: userInSession._id.toString(),
             email: userInSession.email,
-            rol: 1
+            rol: userInSession.rol
         }
         const jwt = generateJWT(dataToGenerateJWT);
 

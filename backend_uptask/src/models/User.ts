@@ -37,6 +37,11 @@ const UserSchema = new Schema<IUsuario>({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Empresa",
         required: true
+    },
+    rol: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Rol",
+        required: true
     }
 }, {timestamps: true});
 const User = mongoose.model<IUsuario>("User", UserSchema);

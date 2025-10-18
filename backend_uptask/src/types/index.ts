@@ -32,6 +32,12 @@ export interface IUsuario extends Document {
     empresa: Types.ObjectId
 }
 
+export interface IRol extends Document {
+    nombre: string,
+    slug: string,
+    empresa: Types.ObjectId
+}
+
 export interface IEmpresa extends Document {
     _id: Types.ObjectId,
     nombre: string,

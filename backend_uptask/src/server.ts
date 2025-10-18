@@ -8,6 +8,7 @@ import UserRouter from "./routers/UserRouter";
 import cors from "cors";
 import {corsConfig} from "./config/cors";
 import EmpresaRouter from "./routers/EmpresaRouter";
+import RolRouter from "./routers/RolRouter";
 
 app.use(express.json());
 conexionDB().then(() => {
@@ -24,5 +25,6 @@ app.use("/proyectos", ProyectoRouter);
 app.use("/tareas", TareaRouter);
 app.use("/users", UserRouter);
 app.use("/empresa", EmpresaRouter);
+app.use("/roles", RolRouter);
 
 export default app;

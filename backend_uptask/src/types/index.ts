@@ -81,3 +81,7 @@ export type GenerateJWT = {
     email: string;
     rol: Types.ObjectId;
 }
+
+export type TypeRow = {
+    Rol: string
+}

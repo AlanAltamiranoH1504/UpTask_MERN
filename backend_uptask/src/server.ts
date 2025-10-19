@@ -11,6 +11,8 @@ import EmpresaRouter from "./routers/EmpresaRouter";
 import RolRouter from "./routers/RolRouter";
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 conexionDB().then(() => {
     console.log("CONEXION CORRECTA A BASE DE DATOS")
 }).catch((error) => {

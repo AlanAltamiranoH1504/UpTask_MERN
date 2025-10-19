@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 import {Rol} from "../models/Rol";
 import {v4 as uuidv4} from "uuid";
+import * as XLSX from "xlsx";
+import * as fs from "node:fs";
 
 export class RolController {
     public prueba(req: Request, res: Response) {
@@ -25,6 +27,64 @@ export class RolController {
             return res.status(500).json({
                 status: false,
                 message: "Error en creación de rol",
+                error: e.message
+            });
+        }
+    }
+
+    public async save_rols(req: Request, res: Response) {
+        try {
+            const file = req.file;
+            const work_book = XLSX.readFile(file.path);
+            const sheetName = work_book.SheetNames[0];
+            const data_sheet = XLSX.utils.sheet_to_json(work_book.Sheets[sheetName]);
+
+            let errors = [];
+            let count_roles_saved = 0;
+            for (let i = 0; i < data_sheet.length; i++) {
+                let row = data_sheet[i];
+                // @ts-ignore
+                let name_rol = row.Rol
+                let slug = uuidv4();
+
+                // * Validacion de que el nombre del rol no esta registrado para los roles de la empresa
+                let name_rol_in_use = await Rol.findOne({
+                    empresa: req.body.empresa,
+                    nombre: name_rol
+                });
+
+                if (name_rol_in_use) {
+                    let error = `El rol '${name_rol}', ya se encontraba registrado en los roles de la empresa`
+                    errors.push(error);
+                    continue;
+                }
+
+                let rol_to_save = await Rol.create({
+                    nombre: name_rol,
+                    slug,
+                    empresa: req.body.empresa
+                });
+                count_roles_saved++;
+            }
+
+            if (errors.length > 0) {
+                return res.status(409).json({
+                    status: false,
+                    errors,
+                    roles_guardados: count_roles_saved
+                });
+            }
+
+            fs.unlinkSync(file.path);
+
+            return res.status(201).json({
+                status: true,
+                message: "Roles de empresa guardado correctamente"
+            });
+        } catch (e) {
+            return res.status(500).json({
+                status: false,
+                message: "Error en guardado de roles",
                 error: e.message
             });
         }

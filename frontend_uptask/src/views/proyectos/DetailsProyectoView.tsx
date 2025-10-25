@@ -1,15 +1,17 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {findProyectoByIdGET} from "../../services/ProyectosService.ts";
 import AddTaskModal from "../../components/tareas/AddTaskModal.tsx";
 import TaskList from "../../components/tareas/TaskList.tsx";
 import EditTaskData from "../../components/tareas/EditTaskData.tsx";
 import TaskModalDetails from "../../components/tareas/TaskModalDetails.tsx";
+import type {UserInSession} from "../../types";
 
 const DetailsProyectoView = () => {
     const navigate = useNavigate();
     const params = useParams();
     const id = params.id!;
+    const queryCliente = useQueryClient();
 
     const {data, isLoading, isError, error} = useQuery({
         queryKey: ["detailsProyectoById"],
@@ -17,6 +19,7 @@ const DetailsProyectoView = () => {
         retry: false,
         refetchOnWindowFocus: false
     });
+    const cacheUserInSession: UserInSession = queryCliente.getQueryData(["showUser"])!;
     if (isLoading) {
         return <div>Cargando...</div>
     }
@@ -31,14 +34,19 @@ const DetailsProyectoView = () => {
             <p className="text-2xl font-light text-gray-500 mt-5">{data.proyecto.descripcion}</p>
 
             <nav className="my-5 flex gap-3">
-                <button type="button"
-                        onClick={() => navigate("?newTask=true")}
-                        className="bg-purple-400 font-varela hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
-                >Agregar Tarea
-                </button>
-                <Link
-                    to={`/proyectos/${data.proyecto._id}/equipo`}
-                    className="bg-emerald-500 font-varela hover:bg-emerald-600 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer">Colaboradores</Link>
+
+                {data?.proyecto.usuario === cacheUserInSession.user._id && (
+                    <>
+                        <button type="button"
+                                onClick={() => navigate("?newTask=true")}
+                                className="bg-purple-400 font-varela hover:bg-purple-500 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer"
+                        >Agregar Tarea
+                        </button>
+                        <Link
+                            to={`/proyectos/${data.proyecto._id}/equipo`}
+                            className="bg-emerald-500 font-varela hover:bg-emerald-600 transition-colors rounded-lg font-bold duration-500 px-10 py-3 text-white text-xl cursor-pointer">Colaboradores</Link>
+                    </>
+                )}
             </nav>
             <TaskList
                 tareas={data.proyecto.tareas}

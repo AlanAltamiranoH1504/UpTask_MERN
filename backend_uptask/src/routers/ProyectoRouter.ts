@@ -26,9 +26,9 @@ router.put("/:id", middlewareJWT, managger_project_middleware, ShowProyectoById,
 router.delete("/:id", middlewareJWT, managger_project_middleware, ShowProyectoById, deleteProyecto);
 
 // * Rutas para miembros de equipo de proyecto
-router.get("/:id/equipo", middlewareJWT, ShowProyectoById, find_team_members);
-router.post("/:id/equipo/busqueda", middlewareJWT, ShowProyectoById, FindMemberToAddTeamRequest, search_member);
-router.post("/:id/equipo/agregado", middlewareJWT, ShowProyectoById, FindMemberToAddTeamRequest, AddMemberToTeamRequest, add_to_member_to_team);
-router.post("/:id/equipo/eliminado", middlewareJWT, ShowProyectoById, RemoveMemberToTeamRequest, remove_member_to_team);
+router.get("/:id/equipo", middlewareJWT, managger_project_middleware, ShowProyectoById, find_team_members);
+router.post("/:id/equipo/busqueda", middlewareJWT, managger_project_middleware, ShowProyectoById, FindMemberToAddTeamRequest, search_member);
+router.post("/:id/equipo/agregado", middlewareJWT, managger_project_middleware, ShowProyectoById, FindMemberToAddTeamRequest, AddMemberToTeamRequest, add_to_member_to_team);
+router.post("/:id/equipo/eliminado", middlewareJWT, managger_project_middleware, ShowProyectoById, RemoveMemberToTeamRequest, remove_member_to_team);
 
 export default router;

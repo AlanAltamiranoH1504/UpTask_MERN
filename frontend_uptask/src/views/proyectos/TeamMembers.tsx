@@ -45,7 +45,7 @@ const TeamMembers = () => {
     }
     if (isError) {
         // @ts-ignore
-        return <div>Ocurrio un error en la busqeuda de miembros: {error.response.data.message}</div>;
+        return <div className="font-varela text-center text-xl">Ocurrio un error en la busqueda de miembros: {error.response.data.message}.</div>;
     }
 
     if (data) return (

@@ -46,6 +46,7 @@ export const responseFindProyectoById = z.object({
         nombreProyecto: z.string(),
         nombreCliente: z.string(),
         descripcion: z.string(),
+        usuario: z.string(),
         status: z.boolean(),
         tareas: z.array(z.object({
             _id: z.string(),
@@ -53,7 +54,8 @@ export const responseFindProyectoById = z.object({
             descripcion: z.string(),
             proyecto: z.string(),
             status: z.string()
-        }))
+        })),
+        equipo: z.array(z.string()),
     })
 });
 

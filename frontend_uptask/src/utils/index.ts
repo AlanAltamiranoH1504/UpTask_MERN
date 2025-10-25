@@ -8,3 +8,7 @@ export const dateFormat = (data: string) => {
         minute: 'numeric'
     }).format(date);
 }
+
+export const adminValidation = (id_user_in_session: string, id_manager: string) => {
+    return id_manager === id_user_in_session;
+}

@@ -1,4 +1,4 @@
-import type {TareaDB} from "../../types";
+import type {TareaDB, UserInSession} from "../../types";
 import {EllipsisVerticalIcon} from "@heroicons/react/16/solid";
 import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/react";
 import {Fragment} from "react";
@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {deleteTareaByIdDELETE} from "../../services/TareasService.ts";
 import {toast} from "react-toastify";
+import {adminValidation} from "../../utils";
 
 type TaskCardProps = {
     task: TareaDB
@@ -13,6 +14,10 @@ type TaskCardProps = {
 const TaskCard = ({task}: TaskCardProps) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const cacheUserInSession: UserInSession = queryClient.getQueryData(["showUser"])!;
+    const cacheProjectDetails = queryClient.getQueryData(["detailsProyectoById"])!;
+    // @ts-ignore
+    const validation_manager = adminValidation(cacheUserInSession.user._id, cacheProjectDetails.proyecto.usuario);
 
     function deleteTarea(idTask: string) {
         deleteTareaMutation.mutate(idTask);
@@ -73,29 +78,34 @@ const TaskCard = ({task}: TaskCardProps) => {
                                         Ver Tarea
                                     </button>
                                 </MenuItem>
-                                <MenuItem>
-                                    <button
-                                        onClick={() => {
-                                            navigate(location.pathname + `?tareaId=${task._id}`)
-                                        }}
-                                        type="button"
-                                        className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                                    >
-                                        Editar Tarea
-                                    </button>
-                                </MenuItem>
+                                {validation_manager && (
+                                    <>
+                                        <MenuItem>
+                                            <button
+                                                onClick={() => {
+                                                    navigate(location.pathname + `?tareaId=${task._id}`)
+                                                }}
+                                                type="button"
+                                                className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                                            >
+                                                Editar Tarea
+                                            </button>
+                                        </MenuItem>
 
-                                <MenuItem>
-                                    <button
-                                        type="button"
-                                        className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                        onClick={() => {
-                                            deleteTarea(task._id)
-                                        }}
-                                    >
-                                        Eliminar Tarea
-                                    </button>
-                                </MenuItem>
+                                        <MenuItem>
+                                            <button
+                                                type="button"
+                                                className="block px-3 py-1 text-sm leading-6 text-red-500"
+                                                onClick={() => {
+                                                    deleteTarea(task._id)
+                                                }}
+                                            >
+                                                Eliminar Tarea
+                                            </button>
+                                        </MenuItem>
+                                    </>
+                                )}
+
                             </MenuItems>
                         </Transition>
                     </Menu>

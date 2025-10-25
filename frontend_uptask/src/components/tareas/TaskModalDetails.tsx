@@ -3,9 +3,9 @@ import {Dialog, Transition} from '@headlessui/react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {findTareaaByIdGET, updateStatusTaskPUT} from "../../services/TareasService.ts";
-import {dateFormat} from "../../utils";
+import {adminValidation, dateFormat} from "../../utils";
 import {useForm} from "react-hook-form";
-import type {FormEditStatusTarea} from "../../types";
+import type {FormEditStatusTarea, UserInSession} from "../../types";
 import {toast} from "react-toastify";
 
 export default function TaskModalDetails() {
@@ -23,6 +23,12 @@ export default function TaskModalDetails() {
         refetchOnWindowFocus: false,
         enabled: !!idTask,
     });
+
+    const cacheUserInSession: UserInSession = queryClient.getQueryData(["showUser"])!;
+    const cacheProjectDetails = queryClient.getQueryData(["detailsProyectoById"])!;
+    // @ts-ignore
+    const validation_manager = adminValidation(cacheUserInSession.user._id, cacheProjectDetails.proyecto.usuario);
+
 
     const {register, handleSubmit, formState: {errors}} = useForm<FormEditStatusTarea>();
 
@@ -107,33 +113,39 @@ export default function TaskModalDetails() {
                                         <p className="text-lg text-slate-500 mb-2">
                                             Descripción: {data.tarea.descripcion}
                                         </p>
-                                        <div className="my-5 space-y-3">
-                                            <form
-                                                onSubmit={handleSubmit(updateStatusTask)}
-                                            >
-                                                <label className="font-bold">
-                                                    Estado Actual: {data.tarea.status}
-                                                </label>
-                                                <select className="w-full p-3 bg-gray-50 border rounded-lg shadow"
-                                                        {...register("status", {
-                                                            required: "El estado de la tarea es obligatorio"
-                                                        })}
-                                                >
-                                                    {estados.map((estado) => (
-                                                        <option selected={data.tarea.status === estado} value={estado}
-                                                                key={estado}>{estado}</option>
-                                                    ))}
-                                                </select>
-                                                <div
-                                                    className="bg-red-100 text-center text-red-600 font-semibold rounded-md">
-                                                    {errors.status && String(errors.status.message)}
-                                                </div>
+                                        {validation_manager && (
+                                            <>
+                                                <div className="my-5 space-y-3">
+                                                    <form
+                                                        onSubmit={handleSubmit(updateStatusTask)}
+                                                    >
+                                                        <label className="font-bold">
+                                                            Estado Actual: {data.tarea.status}
+                                                        </label>
+                                                        <select
+                                                            className="w-full p-3 bg-gray-50 border rounded-lg shadow"
+                                                            {...register("status", {
+                                                                required: "El estado de la tarea es obligatorio"
+                                                            })}
+                                                        >
+                                                            {estados.map((estado) => (
+                                                                <option selected={data.tarea.status === estado}
+                                                                        value={estado}
+                                                                        key={estado}>{estado}</option>
+                                                            ))}
+                                                        </select>
+                                                        <div
+                                                            className="bg-red-100 text-center text-red-600 font-semibold rounded-md">
+                                                            {errors.status && String(errors.status.message)}
+                                                        </div>
 
-                                                <input type="submit"
-                                                       className=" mt-4 border py-2 rounded-lg bg-purple-400 px-3 font-bold text-white font-varela hover:bg-purple-500 transition-colors duration-500 cursor-pointer"
-                                                       value="Actualizar Estado"/>
-                                            </form>
-                                        </div>
+                                                        <input type="submit"
+                                                               className=" mt-4 border py-2 rounded-lg bg-purple-400 px-3 font-bold text-white font-varela hover:bg-purple-500 transition-colors duration-500 cursor-pointer"
+                                                               value="Actualizar Estado"/>
+                                                    </form>
+                                                </div>
+                                            </>
+                                        )}
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>

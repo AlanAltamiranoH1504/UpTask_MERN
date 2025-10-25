@@ -12,7 +12,7 @@ const tareaStatus = {
 
 export type TareaStatus = typeof tareaStatus[keyof typeof tareaStatus];
 
-const tareaSchema = new Schema({
+const tareaSchema = new Schema<TTarea>({
     nombre: {
         type: String,
         required: true,
@@ -32,6 +32,11 @@ const tareaSchema = new Schema({
         type: String,
         enum: Object.values(tareaStatus),
         default: tareaStatus.pendiente
+    },
+    completedBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: null
     }
 }, {timestamps: true});
 const Tarea = mongoose.model<TTarea>("Tarea", tareaSchema);

@@ -19,7 +19,9 @@ export interface TTarea extends Document {
     nombre: string,
     descripcion: string,
     proyecto: Types.ObjectId,
-    status: TareaStatus
+    status: TareaStatus,
+    completedBy: Types.ObjectId,
+    
 }
 
 export interface IUsuario extends Document {

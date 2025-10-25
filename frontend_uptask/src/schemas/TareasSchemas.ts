@@ -19,6 +19,12 @@ export const responseFindTareaByIdAPI = z.object({
         status: z.string(),
         createdAt: z.string(),
         updatedAt: z.string(),
+        completedBy: z.object({
+            _id: z.string(),
+            nombre: z.string(),
+            apellidos: z.string(),
+            email: z.string(),
+        }).nullable()
     })
 });
 

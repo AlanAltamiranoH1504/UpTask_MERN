@@ -43,7 +43,8 @@ const findTareaById = async (req, res) => {
     try {
         const tareaToShow = await Tarea.findById(req.params.id)
             .select("-__v")
-            .populate("proyecto", "_id nombreProyecto nombreCliente descripcion");
+            .populate("proyecto", "_id nombreProyecto nombreCliente descripcion")
+            .populate("completedBy", "_id nombre apellidos email");
         return res.status(200).json({
             status: true,
             tarea: tareaToShow
@@ -109,7 +110,8 @@ const updateStatus = async (req, res) => {
     try {
         const tareaToUpdate = await Tarea.findByIdAndUpdate(req.params.id, {
             $set: {
-                status: req.body.status
+                status: req.body.status,
+                completedBy: req.body.status === "Completada" ? req.user._id : null
             }
         }, {new: true});
         return res.status(200).json({

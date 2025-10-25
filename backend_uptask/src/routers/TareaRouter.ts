@@ -25,6 +25,6 @@ router.get("/:id", middlewareJWT, ShowTareaRequest, findTareaById);
 router.get("/:idProyecto/search", middlewareJWT, FindProyectoToTareaRequest, findAllTareasByIdProyecto);
 router.post("/:id/create", middlewareJWT, ShowProyectoById, CreateTareaRequest, saveTarea);
 router.put("/:id/update", middlewareJWT, manager_task_middleware, ShowTareaRequest, UpdateTareaRequest, updateTarea);
-router.put("/:id/update-status", middlewareJWT, manager_task_middleware, ShowTareaRequest, UpdateStatusRequest, updateStatus);
+router.put("/:id/update-status", middlewareJWT, ShowTareaRequest, UpdateStatusRequest, updateStatus);
 router.delete("/:id/delete", middlewareJWT, manager_task_middleware, ShowTareaRequest, deleteById);
 export default router;

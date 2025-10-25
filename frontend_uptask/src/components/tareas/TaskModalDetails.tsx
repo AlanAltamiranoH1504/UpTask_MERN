@@ -113,17 +113,25 @@ export default function TaskModalDetails() {
                                         <p className="text-lg text-slate-500 mb-2">
                                             Descripción: {data.tarea.descripcion}
                                         </p>
-                                        {validation_manager && (
+
+                                        {data.tarea.completedBy && (
+                                            <>
+                                                <p className="font-varela">
+                                                    <span className="font-bold text-slate-600">Estado actualizado por: <span className="text-indigo-500">{data.tarea.completedBy.nombre} {" "} {data.tarea.completedBy.apellidos} - {data.tarea.completedBy.email}</span></span>
+                                                </p>
+                                            </>
+                                        )}
+                                        {/*{validation_manager && (*/}
                                             <>
                                                 <div className="my-5 space-y-3">
                                                     <form
                                                         onSubmit={handleSubmit(updateStatusTask)}
                                                     >
-                                                        <label className="font-bold">
+                                                        <label className="font-bold mb-3">
                                                             Estado Actual: {data.tarea.status}
                                                         </label>
                                                         <select
-                                                            className="w-full p-3 bg-gray-50 border rounded-lg shadow"
+                                                            className="w-full p-3 mt-3 bg-gray-50 border rounded-lg shadow"
                                                             {...register("status", {
                                                                 required: "El estado de la tarea es obligatorio"
                                                             })}
@@ -145,7 +153,7 @@ export default function TaskModalDetails() {
                                                     </form>
                                                 </div>
                                             </>
-                                        )}
+                                        {/*)}*/}
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>

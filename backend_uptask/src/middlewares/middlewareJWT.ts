@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/User";
+import {Rol} from "../models/Rol";
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ export const middlewareJWT = async (req, res, next) => {
             throw new Error("JWT No Valido");
         }
 
-        if (typeof  verifyJWT === "string") {
+        if (typeof verifyJWT === "string") {
             throw new Error("Token JWT Corrupto")
         }
 
@@ -31,7 +32,10 @@ export const middlewareJWT = async (req, res, next) => {
         const userInSesion = await User.findOne({
             email,
             _id: id
-        }).select("_id nombre apellidos email");
+        }).populate({
+            path: "rol",
+            select: "nombre"
+        }).select("_id nombre apellidos email rol");
 
         if (!userInSesion) {
             throw new Error("Error en identificación de usuario por JWT");

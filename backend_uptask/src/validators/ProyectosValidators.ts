@@ -68,11 +68,17 @@ const ShowProyectoById = [
             });
         }
 
+        // * Si es dueño del proyecto entonces next(), si no lo es, checo que sea un integrante del proyecto
         if (existenciaProyecto.usuario.toString() !== req.user._id.toString()) {
-            return res.status(401).json({
-                status: false,
-                message: "Permisos denegados"
+            const is_team_member = existenciaProyecto.equipo.findIndex((member) => {
+                return member._id.toString() === req.user._id.toString()
             });
+            if (is_team_member < 0) {
+                return res.status(401).json({
+                    status: false,
+                    message: "Permisos denegados"
+                });
+            }
         }
 
         next();
@@ -221,7 +227,7 @@ const RemoveMemberToTeamRequest = [
         });
 
         // * Validacion de usuario en equipo
-        if(exists_user_in_team < 0) {
+        if (exists_user_in_team < 0) {
             return res.status(404).json({
                 status: false,
                 message: "El usuario no se encuentra como miembro del equipo,"

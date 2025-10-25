@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {Rol} from "../models/Rol";
 import {v4 as uuidv4} from "uuid";
+// @ts-ignore
 import * as XLSX from "xlsx";
 import * as fs from "node:fs";
 
@@ -35,6 +36,25 @@ export class RolController {
     public async save_rols(req: Request, res: Response) {
         try {
             const file = req.file;
+            // ! Validacion de archivo
+            if (!file) {
+                return res.status(404).json({
+                    status: false,
+                    message: "El archivo no fue cargado o hubo un error en la carga del mismo"
+                });
+            }
+
+            // ! Validacion de los mimimes del archivo
+            const mime = file.mimetype;
+            const valid_mimes = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"];
+            const validated_mime = valid_mimes.includes(mime);
+            if (!validated_mime) {
+                return res.status(409).json({
+                    status: false,
+                    message: "Mimes de archivo no validas"
+                });
+            }
+
             const work_book = XLSX.readFile(file.path);
             const sheetName = work_book.SheetNames[0];
             const data_sheet = XLSX.utils.sheet_to_json(work_book.Sheets[sheetName]);

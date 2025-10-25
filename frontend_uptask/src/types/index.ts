@@ -1,6 +1,6 @@
 import {z} from "zod"
 import {type responseFindProyectoById, responseSearchMember} from "../schemas/ProyectosSchemas.ts";
-import type {responseShowUserAPI} from "../schemas/UsersSchemas.ts";
+import {type responseShowUserAPI, responseUserInSessionAPI} from "../schemas/UsersSchemas.ts";
 
 // TYPES PARA DATOS DE LA DB
 export type ProyectoDB = {
@@ -55,6 +55,7 @@ export type DataToRemoveMember = {
     idProject: string,
     email: string
 }
+export type UserInSession = z.infer<typeof responseUserInSessionAPI>
 
 // INFERENCIAS
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

@@ -5,7 +5,11 @@ const findAllProyectos = async (request, response) => {
     try {
         const proyectos = await Proyecto.find({
             status: true,
-            usuario: request.user._id
+            $or: [
+                // {status: true},
+                {usuario: request.user._id},
+                {equipo: {$in: [request.user._id]}}
+            ]
         }).populate("usuario", "_id nombre apellidos email");
 
         return response.status(200).json({
@@ -25,8 +29,11 @@ const findProyectoById = async (req, res) => {
     try {
         const proyectoToShow = await Proyecto.findOne({
             _id: req.params.id,
-            usuario: req.user._id,
-            status: true
+            status: true,
+            $or: [
+                {usuario: req.user._id},
+                {equipo: {$in: [req.user._id]}}
+            ]
         })
             .select("-__v -createdAt -updatedAt")
             .populate("tareas", "_id nombre descripcion status proyecto");

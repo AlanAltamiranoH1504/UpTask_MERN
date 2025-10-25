@@ -5,6 +5,7 @@ import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/rea
 import {EllipsisVerticalIcon} from "@heroicons/react/16/solid";
 import {Fragment} from "react";
 import {toast} from "react-toastify";
+import type {UserInSession} from "../types";
 
 const DashBoardView = () => {
     const queryCliente = useQueryClient();
@@ -14,6 +15,7 @@ const DashBoardView = () => {
         retry: false,
         refetchOnWindowFocus: false
     });
+    const cacheUserInSession: UserInSession = queryCliente.getQueryData(["showUser"])!;
 
     function deleteProyectoFunction(id: string) {
         deleteProyectoMutation.mutate(id);
@@ -91,23 +93,30 @@ const DashBoardView = () => {
                                                     Ver Proyecto
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem>
-                                                <Link to={`/proyectos/edicion/${proyecto._id}`}
-                                                      className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                                    Editar Proyecto
-                                                </Link>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <button
-                                                    type='button'
-                                                    className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                    onClick={() => {
-                                                        deleteProyectoFunction(proyecto._id)
-                                                    }}
-                                                >
-                                                    Eliminar Proyecto
-                                                </button>
-                                            </MenuItem>
+
+
+                                            {proyecto.usuario._id === cacheUserInSession.user._id && (
+                                                <>
+                                                    <MenuItem>
+                                                        <Link to={`/proyectos/edicion/${proyecto._id}`}
+                                                              className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                                            Editar Proyecto
+                                                        </Link>
+                                                    </MenuItem>
+                                                    <MenuItem>
+                                                        <button
+                                                            type='button'
+                                                            className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                                            onClick={() => {
+                                                                deleteProyectoFunction(proyecto._id)
+                                                            }}
+                                                        >
+                                                            Eliminar Proyecto
+                                                        </button>
+                                                    </MenuItem>
+                                                </>
+                                            )}
+
                                         </MenuItems>
                                     </Transition>
                                 </Menu>

@@ -16,6 +16,7 @@ export const responseDeleteProyecto = z.object({
 });
 
 export const responseFindAllProyectos = z.object({
+    status: z.boolean(),
     proyectos: z.array(
         z.object({
             _id: z.string(),
@@ -23,7 +24,15 @@ export const responseFindAllProyectos = z.object({
             nombreCliente: z.string(),
             descripcion: z.string(),
             status: z.boolean(),
+            usuario: z.object({
+                _id: z.string(),
+                nombre: z.string(),
+                apellidos: z.string(),
+                email: z.string(),
+            }),
             tareas: z.array(z.string()),
+            equipo: z.array(z.string()),
+            createdAt: z.string(),
             updatedAt: z.string(),
             __v: z.number(),
         })

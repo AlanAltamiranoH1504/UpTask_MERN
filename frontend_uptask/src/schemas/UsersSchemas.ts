@@ -28,9 +28,27 @@ export const responseShowUserAPI = z.object({
         _id: z.string(),
         nombre: z.string(),
         apellidos: z.string(),
-        email: z.string()
+        email: z.string(),
+        rol: z.object({
+            _id: z.string(),
+            nombre: z.string()
+        })
     })
 });
 export const responseLogoutUserAPI = z.object({
     status: z.boolean()
 });
+
+export const responseUserInSessionAPI = z.object({
+    status: z.boolean(),
+    user: z.object({
+        _id: z.string(),
+        nombre: z.string(),
+        apellidos: z.string(),
+        email: z.string(),
+        rol: z.object({
+            _id: z.string(),
+            nombre: z.string(),
+        })
+    })
+})

@@ -14,7 +14,7 @@ export class NotaController {
             const note_to_create = await Nota.create({
                 titulo: req.body.titulo,
                 contenido: req.body.contenido,
-                tarea: req.body.tarea,
+                tarea: req.params.id,
                 createdBy: req.user._id
             });
 
@@ -48,6 +48,28 @@ export class NotaController {
                 message: "Ocurrio un error en la busqueda de la nota",
                 error: e.message
             })
+        }
+    }
+
+    public async find_all_notes(req: Request, res: Response) {
+        try {
+            const notes_of_task = await Nota.find({
+                tarea: req.params.id
+            })
+                .populate("tarea", "nombre descripcion")
+                .select("-__v -createdAt -updatedAt");
+
+            return res.status(200).json({
+                status: true,
+                notas: notes_of_task,
+                total: notes_of_task.length
+            });
+        } catch (e) {
+            return res.status(500).json({
+                status: false,
+                message: "Ocurrio un error en el listado de notas de una tarea",
+                error: e.message
+            });
         }
     }
 

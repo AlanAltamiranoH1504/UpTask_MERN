@@ -5,7 +5,6 @@ const noteSchema = new Schema<INota>({
     titulo: {
         type: String,
         required: true,
-        unique: true,
         trim: true
     },
     contenido: {

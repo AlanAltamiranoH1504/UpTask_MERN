@@ -21,7 +21,7 @@ export interface TTarea extends Document {
     proyecto: Types.ObjectId,
     status: TareaStatus,
     completedBy: Types.ObjectId,
-    
+
 }
 
 export interface IUsuario extends Document {
@@ -49,6 +49,13 @@ export interface IEmpresa extends Document {
     email: string,
     status: boolean
     usuarios: PopulatedDoc<IUsuario & Document>[]
+}
+
+export interface INota extends Document {
+    titulo: string,
+    contenido: string;
+    createdBy: Types.ObjectId;
+    tarea: Types.ObjectId;
 }
 
 export type EmailConfirmUser = {

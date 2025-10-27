@@ -9,6 +9,7 @@ import cors from "cors";
 import {corsConfig} from "./config/cors";
 import EmpresaRouter from "./routers/EmpresaRouter";
 import RolRouter from "./routers/RolRouter";
+import NotaRouter from "./routers/NotaRouter";
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -28,5 +29,6 @@ app.use("/tareas", TareaRouter);
 app.use("/users", UserRouter);
 app.use("/empresa", EmpresaRouter);
 app.use("/roles", RolRouter);
+app.use("/notas", NotaRouter);
 
 export default app;

@@ -7,6 +7,8 @@ import {adminValidation, dateFormat} from "../../utils";
 import {useForm} from "react-hook-form";
 import type {FormEditStatusTarea, UserInSession} from "../../types";
 import {toast} from "react-toastify";
+import NotasPanel from "../notas/NotasPanel.tsx";
+import {findAllNotesGET} from "../../services/NotasService.ts";
 
 export default function TaskModalDetails() {
     const location = useLocation();
@@ -22,6 +24,13 @@ export default function TaskModalDetails() {
         retry: false,
         refetchOnWindowFocus: false,
         enabled: !!idTask,
+    });
+
+    const {data: dataNotas} = useQuery({
+        queryKey: ["findAllNotes"],
+        queryFn: () => findAllNotesGET(idTask),
+        retry: true,
+        refetchOnWindowFocus: false
     });
 
     const cacheUserInSession: UserInSession = queryClient.getQueryData(["showUser"])!;
@@ -117,43 +126,49 @@ export default function TaskModalDetails() {
                                         {data.tarea.completedBy && (
                                             <>
                                                 <p className="font-varela">
-                                                    <span className="font-bold text-slate-600">Estado actualizado por: <span className="text-indigo-500">{data.tarea.completedBy.nombre} {" "} {data.tarea.completedBy.apellidos} - {data.tarea.completedBy.email}</span></span>
+                                                    <span
+                                                        className="font-bold text-slate-600">Estado actualizado por: <span
+                                                        className="text-indigo-500">{data.tarea.completedBy.nombre} {" "} {data.tarea.completedBy.apellidos} - {data.tarea.completedBy.email}</span></span>
                                                 </p>
                                             </>
                                         )}
                                         {/*{validation_manager && (*/}
-                                            <>
-                                                <div className="my-5 space-y-3">
-                                                    <form
-                                                        onSubmit={handleSubmit(updateStatusTask)}
+                                        <>
+                                            <div className="my-5 space-y-3">
+                                                <form
+                                                    onSubmit={handleSubmit(updateStatusTask)}
+                                                >
+                                                    <label className="font-bold mb-3">
+                                                        Estado Actual: {data.tarea.status}
+                                                    </label>
+                                                    <select
+                                                        className="w-full p-3 mt-3 bg-gray-50 border rounded-lg shadow"
+                                                        {...register("status", {
+                                                            required: "El estado de la tarea es obligatorio"
+                                                        })}
                                                     >
-                                                        <label className="font-bold mb-3">
-                                                            Estado Actual: {data.tarea.status}
-                                                        </label>
-                                                        <select
-                                                            className="w-full p-3 mt-3 bg-gray-50 border rounded-lg shadow"
-                                                            {...register("status", {
-                                                                required: "El estado de la tarea es obligatorio"
-                                                            })}
-                                                        >
-                                                            {estados.map((estado) => (
-                                                                <option selected={data.tarea.status === estado}
-                                                                        value={estado}
-                                                                        key={estado}>{estado}</option>
-                                                            ))}
-                                                        </select>
-                                                        <div
-                                                            className="bg-red-100 text-center text-red-600 font-semibold rounded-md">
-                                                            {errors.status && String(errors.status.message)}
-                                                        </div>
+                                                        {estados.map((estado) => (
+                                                            <option selected={data.tarea.status === estado}
+                                                                    value={estado}
+                                                                    key={estado}>{estado}</option>
+                                                        ))}
+                                                    </select>
+                                                    <div
+                                                        className="bg-red-100 text-center text-red-600 font-semibold rounded-md">
+                                                        {errors.status && String(errors.status.message)}
+                                                    </div>
 
-                                                        <input type="submit"
-                                                               className=" mt-4 border py-2 rounded-lg bg-purple-400 px-3 font-bold text-white font-varela hover:bg-purple-500 transition-colors duration-500 cursor-pointer"
-                                                               value="Actualizar Estado"/>
-                                                    </form>
-                                                </div>
-                                            </>
+                                                    <input type="submit"
+                                                           className=" mt-4 border py-2 rounded-lg bg-purple-400 px-3 font-bold text-white font-varela hover:bg-purple-500 transition-colors duration-500 cursor-pointer"
+                                                           value="Actualizar Estado"/>
+                                                </form>
+                                            </div>
+                                        </>
+                                        <NotasPanel
+                                            notas={dataNotas?.notas}
+                                        />
                                         {/*)}*/}
+
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>

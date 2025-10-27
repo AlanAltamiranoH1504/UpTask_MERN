@@ -41,6 +41,11 @@ export type FormConfirmUser = Pick<UserDB, "token">
 export type FormLogin = Pick<UserDB, "email" | "password">
 export type FormRegisterUser = Pick<UserDB, "nombre" | "apellidos" | "email" | "password" | "empresa">
 export type FormResetPassword = Pick<UserDB, "email">
+export type FormCreateNote = {
+    titulo: string,
+    contenido: string
+    tarea: string
+}
 export type FormSearchMembers = {
     email: Pick<UserDB, "email">,
     _id: string

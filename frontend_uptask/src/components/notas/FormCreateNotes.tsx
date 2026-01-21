@@ -21,7 +21,7 @@ const FormCreateNotes = () => {
         onSuccess: () => {
             toast.success("Nota agregada correctemente");
             queryClient.invalidateQueries({
-                queryKey: ["showDetailsTask"]
+                queryKey: ["showDetailsTask", "findAllNotes"]
             });
             reset();
         },

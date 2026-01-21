@@ -24,6 +24,6 @@ router.post("/confirm/:token", ConfirmUserRequest, confirm_user);
 router.post("/login", LoginRequest, login_user);
 router.post("/send_email_reset_password", SendEmailResetPasswordRequest, send_email_reset_password);
 router.post("/reset_password", ResetPasswordRequest, reset_password);
-router.get("/logout_user", middlewareJWT, logout_user);
+router.get("/logout_user", logout_user);
 
 export default router;

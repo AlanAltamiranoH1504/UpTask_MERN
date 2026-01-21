@@ -57,6 +57,7 @@ export class NotaController {
                 tarea: req.params.id
             })
                 .populate("tarea", "nombre descripcion")
+                .populate("createdBy", "nombre apellidos email")
                 .select("-__v -createdAt -updatedAt");
 
             return res.status(200).json({

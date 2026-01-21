@@ -11,6 +11,6 @@ export const generateJWT = (data: GenerateJWT) => {
         email: data.email,
         rol: data.rol
     }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "15m"
+        expiresIn: "45m"
     });
 }

@@ -6,7 +6,12 @@ type NotasPanelProps = {
         _id: string;
         titulo: string;
         contenido: string;
-        createdBy: string;
+        createdBy: {
+            _id: string;
+            nombre: string;
+            apellidos: string;
+            email: string;
+        };
         tarea: {
             _id: string;
             nombre: string;
@@ -22,16 +27,18 @@ const NotasPanel = ({notas}: NotasPanelProps) => {
                 <>
                     <div className="divide-y divide-gray-100 mt-10">
                         <p className="font-varela text-2xl text-slate-600 mb-1 font-semibold">Notas: </p>
-                        {notas?.map((nota) => (
-                            <>
-                                <div className="px-3 flex justify-between items-center">
-                                    <div>
-                                        <p className="font-varela font-semibold ">{nota.titulo} por: {nota.createdBy}</p>
-                                        <p className="font-varela text-sm ml-3 text-gray-400"> - {nota.contenido}</p>
+                        <div className="max-h-52 overflow-y-auto space-y-3 pr-2">
+                            {notas?.map((nota) => (
+                                <>
+                                    <div className="px-3 flex justify-between items-center">
+                                        <div>
+                                            <p className="font-varela font-semibold ">{nota.titulo} por: {nota.createdBy.nombre} {nota.createdBy.apellidos}</p>
+                                            <p className="font-varela text-sm ml-3 text-gray-400"> - {nota.contenido}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        ))}
+                                </>
+                            ))}
+                        </div>
                     </div>
                 </>
             ) : (

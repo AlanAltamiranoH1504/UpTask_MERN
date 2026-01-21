@@ -12,11 +12,16 @@ export const responseFindAllNotes = z.object({
             _id: z.string(),
             titulo: z.string(),
             contenido: z.string(),
-            createdBy: z.string(),
             tarea: z.object({
                 _id: z.string(),
                 nombre: z.string(),
                 descripcion: z.string(),
+            }),
+            createdBy: z.object({
+                _id: z.string(),
+                nombre: z.string(),
+                apellidos: z.string(),
+                email: z.string(),
             })
         })
     )

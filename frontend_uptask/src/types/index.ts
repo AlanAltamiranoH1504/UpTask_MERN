@@ -73,6 +73,10 @@ export type FormChangePassword = {
     confirm_password: string
 }
 
+export type FormVerifyPassword = {
+    password: string
+}
+
 // INFERENCIAS
 export type UserInSession = z.infer<typeof responseUserInSessionAPI>
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

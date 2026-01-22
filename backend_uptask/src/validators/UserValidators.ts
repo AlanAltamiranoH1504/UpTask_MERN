@@ -295,6 +295,22 @@ const UpdatePasswordRequest = [
     }
 ];
 
+const VerifyPasswordRequest = [
+    body("password")
+        .notEmpty().withMessage("El password es obligatorio")
+        .isString().withMessage("El password debe ser una cadena de caracteres"),
+    (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(409).json({
+                errors: errors.array()
+            });
+        }
+        next();
+    }
+];
+
 export {
     CreateUserRequest,
     ConfirmUserRequest,
@@ -302,5 +318,6 @@ export {
     SendEmailResetPasswordRequest,
     ResetPasswordRequest,
     EditProfileRequest,
-    UpdatePasswordRequest
+    UpdatePasswordRequest,
+    VerifyPasswordRequest
 }

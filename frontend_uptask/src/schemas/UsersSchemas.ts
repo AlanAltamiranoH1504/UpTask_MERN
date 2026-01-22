@@ -57,3 +57,6 @@ export const responseGeneralUser = z.object({
     status: z.boolean(),
     message: z.string()
 });
+export const responseVerifyPassword = z.object({
+    status: z.boolean(),
+})

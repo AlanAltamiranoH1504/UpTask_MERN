@@ -228,6 +228,30 @@ const update_password = async (req, res) => {
     }
 }
 
+const verify_password = async (req, res) => {
+    try {
+        const user_to_verify = await User.findOne({
+            _id: req.user._id
+        }).select("password");
+
+        const password_check = await bcrypt.compare(req.body.password, user_to_verify.password);
+        if (!password_check) {
+            return res.status(409).json({
+                status: false
+            });
+        }
+        return res.status(200).json({
+            status: true
+        });
+    }catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en la verificacion del password",
+            error: e.message
+        });
+    }
+}
+
 const logout_user = (req, res) => {
     try {
         req.user = null;
@@ -252,5 +276,6 @@ export {
     show_user,
     logout_user,
     edit_profile,
-    update_password
+    update_password,
+    verify_password
 }

@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteProyectoDELETE, findAllProyectosGET} from "../services/ProyectosService.ts";
 import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/react";
@@ -6,6 +6,7 @@ import {EllipsisVerticalIcon} from "@heroicons/react/16/solid";
 import {Fragment} from "react";
 import {toast} from "react-toastify";
 import type {UserInSession} from "../types";
+import {DeleteProjectModal} from "../components/proyectos/DeleteProjectModal.tsx";
 
 const DashBoardView = () => {
     const queryCliente = useQueryClient();
@@ -16,6 +17,7 @@ const DashBoardView = () => {
         refetchOnWindowFocus: false
     });
     const navigate = useNavigate();
+    const location = useLocation();
     const cacheUserInSession: UserInSession = queryCliente.getQueryData(["showUser"])!;
 
     function deleteProyectoFunction(id: string) {
@@ -124,7 +126,8 @@ const DashBoardView = () => {
                                                             type='button'
                                                             className='block px-3 py-1 text-sm leading-6 text-red-500'
                                                             onClick={() => {
-                                                                deleteProyectoFunction(proyecto._id)
+                                                                // deleteProyectoFunction(proyecto._id)
+                                                                navigate(location.pathname + `?deleteProject=${proyecto._id}`)
                                                             }}
                                                         >
                                                             Eliminar Proyecto
@@ -143,6 +146,7 @@ const DashBoardView = () => {
             ) : (
                 <h2>No hay proyectos disponibles</h2>
             )}
+            <DeleteProjectModal/>
         </>
     );
 }

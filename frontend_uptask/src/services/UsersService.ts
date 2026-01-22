@@ -5,14 +5,14 @@ import type {
     FormLogin,
     FormRegisterUser,
     FormResetPassword,
-    FormSaveNewPassword
+    FormSaveNewPassword, FormVerifyPassword
 } from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
 import {
     responseConfirmUserAPI, responseGeneralUser,
     responseLoginUserAPI, responseLogoutUserAPI,
     responseRegisterUserAPI,
-    responseResetPasswordAPI, responseShowUserAPI
+    responseResetPasswordAPI, responseShowUserAPI, responseVerifyPassword
 } from "../schemas/UsersSchemas.ts";
 import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
 import axios from "axios";
@@ -126,7 +126,7 @@ export async function editProfilePUT(data: FormEditProfile) {
         if (resultAPI.success) {
             return responseAPI.data;
         }
-    }catch (e) {
+    } catch (e) {
         if (axios.isAxiosError(e)) {
             throw e.response?.data || {
                 message: "Ocurrio un error en la actualizacion de datos"
@@ -147,10 +147,31 @@ export async function changePasswordPUT(data: FormChangePassword) {
         if (resultAPI.success) {
             return responseAPI.data;
         }
-    }catch (e) {
+    } catch (e) {
         if (axios.isAxiosError(e)) {
             throw e.response?.data || {
                 message: "Ocurrio un error en el cambio de password"
+            }
+        }
+        throw e;
+    }
+}
+
+export async function verifyPasswordPOST(data: FormVerifyPassword) {
+    try {
+        const respnseAPI = await ClienteAxios.post("/users/verify_password", data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseVerifyPassword.safeParse(respnseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        if (axios.isAxiosError(e)) {
+            throw e.response?.data || {
+                message: "Ocurrio un error en la verificacion de password"
             }
         }
         throw e;

@@ -183,6 +183,30 @@ const show_user = async (req, res) => {
     }
 }
 
+const edit_profile = async (req, res) => {
+    try {
+        const user_to_edit = req.user;
+        await User.findByIdAndUpdate(user_to_edit._id, {
+            $set: {
+                nombre: req.body.nombre,
+                apellidos: req.body.apellidos,
+                email: req.body.email,
+            }
+        });
+
+        return res.status(200).json({
+            status: true,
+            message: "Usuario actualizado correctamente",
+        });
+    }catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en editar usuario",
+            error: e.message
+        });
+    }
+}
+
 const logout_user = (req, res) => {
     try {
         req.user = null;
@@ -205,5 +229,6 @@ export {
     send_email_reset_password,
     reset_password,
     show_user,
-    logout_user
+    logout_user,
+    edit_profile
 }

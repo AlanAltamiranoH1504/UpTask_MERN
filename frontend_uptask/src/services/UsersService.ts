@@ -1,12 +1,20 @@
-import type {FormConfirmUser, FormLogin, FormRegisterUser, FormResetPassword, FormSaveNewPassword} from "../types";
+import type {
+    FormConfirmUser,
+    FormEditProfile,
+    FormLogin,
+    FormRegisterUser,
+    FormResetPassword,
+    FormSaveNewPassword
+} from "../types";
 import ClienteAxios from "../axios/ClienteAxios.ts";
 import {
-    responseConfirmUserAPI,
+    responseConfirmUserAPI, responseGeneralUser,
     responseLoginUserAPI, responseLogoutUserAPI,
     responseRegisterUserAPI,
     responseResetPasswordAPI, responseShowUserAPI
 } from "../schemas/UsersSchemas.ts";
 import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
+import axios from "axios";
 
 export async function confirmUserPOST(data: FormConfirmUser) {
     // eslint-disable-next-line no-useless-catch
@@ -102,6 +110,27 @@ export async function logoutUserGET() {
             return resultAPI.data;
         }
     } catch (e) {
+        throw e;
+    }
+}
+
+export async function editProfilePUT(data: FormEditProfile) {
+    try {
+        const responseAPI = await ClienteAxios.put("/users/edit_profile", data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseGeneralUser.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return responseAPI.data;
+        }
+    }catch (e) {
+        if (axios.isAxiosError(e)) {
+            throw e.response?.data || {
+                message: "Ocurrio un error en la actualizacion de datos"
+            }
+        }
         throw e;
     }
 }

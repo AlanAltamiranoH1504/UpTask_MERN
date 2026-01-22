@@ -60,9 +60,15 @@ export type DataToRemoveMember = {
     idProject: string,
     email: string
 }
-export type UserInSession = z.infer<typeof responseUserInSessionAPI>
+export type FormEditProfile = {
+    nombre: string,
+    apellidos: string,
+    email: string,
+    rol: string
+}
 
 // INFERENCIAS
+export type UserInSession = z.infer<typeof responseUserInSessionAPI>
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>
 export type ShowUserInfer = z.infer<typeof responseShowUserAPI>
 export type SearchMemberResult = z.infer<typeof responseSearchMember>

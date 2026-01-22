@@ -51,4 +51,9 @@ export const responseUserInSessionAPI = z.object({
             nombre: z.string(),
         })
     })
-})
+});
+
+export const responseGeneralUser = z.object({
+    status: z.boolean(),
+    message: z.string()
+});

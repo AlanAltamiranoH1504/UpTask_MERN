@@ -11,6 +11,9 @@ import RegisterView from "./views/auth/RegisterView.tsx";
 import SendEmailToResetPasswordView from "./views/auth/SendEmailToResetPasswordView.tsx";
 import ResetPasswordView from "./views/auth/ResetPasswordView.tsx";
 import TeamMembers from "./views/proyectos/TeamMembers.tsx";
+import {ProfileView} from "./views/profile/ProfileView.tsx";
+import {ChangePassword} from "./views/profile/ChangePassword.tsx";
+import {ProfileLayout} from "./layouts/ProfileLayout.tsx";
 const AppRouter = () => {
     return (
         <>
@@ -23,6 +26,11 @@ const AppRouter = () => {
                         <Route path="/proyectos/edicion/:id" element={<EditProyectoView/>}></Route>
                         <Route path="/proyectos/:id" element={<DetailsProyectoView/>}></Route>
                         <Route path="/proyectos/:id/equipo" element={<TeamMembers/>}></Route>
+
+                        <Route element={<ProfileLayout/>}>
+                            <Route path="/profile" element={<ProfileView/>}></Route>
+                            <Route path="/profile/password" element={<ChangePassword/>}></Route>
+                        </Route>
                     </Route>
 
                     <Route element={<AuthLayout/>}>

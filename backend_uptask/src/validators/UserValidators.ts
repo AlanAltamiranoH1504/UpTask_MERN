@@ -4,8 +4,7 @@ import {EmailConfirmEmpresa, EmailConfirmUser} from "../types";
 import emailConfirmUser from "../emails/EmailConfirmUser";
 import bcrypt from "bcrypt";
 import {Empresa} from "../models/Empresa";
-import {Rol} from "../models/Rol";
-import {email_confirm_empresa} from "../emails/EmailConfirmEmpresa";
+import {Request, Response,NextFunction} from "express";
 
 const CreateUserRequest = [
     body("nombre")
@@ -234,10 +233,42 @@ const ResetPasswordRequest = [
     }
 ];
 
+const EditProfileRequest = [
+    body("nombre")
+        .notEmpty().withMessage("El nombre es obligatorio")
+        .isString().withMessage("El nombre debe ser una cadena texto"),
+    body("apellidos")
+        .notEmpty().withMessage("El apellidos es obligatorio")
+        .isString().withMessage("El apellidos debe ser una cadena de caracteres"),
+    body("email")
+        .notEmpty().withMessage("El email es obligatorio")
+        .isEmail().withMessage("Formato de email no valido"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(409).json(errors.array());
+        }
+
+        const email_in_use = await User.findOne({
+            email: req.body.email
+        });
+
+        if (email_in_use && email_in_use._id.toString() !== req.user._id.toString()) {
+            return res.status(409).json({
+                status: false,
+                message: "El email ya se encuentra en uso por otro usuario"
+            });
+        }
+        next();
+    }
+]
+
 export {
     CreateUserRequest,
     ConfirmUserRequest,
     LoginRequest,
     SendEmailResetPasswordRequest,
-    ResetPasswordRequest
+    ResetPasswordRequest,
+    EditProfileRequest
 }

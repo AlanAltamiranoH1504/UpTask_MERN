@@ -1,4 +1,7 @@
 import FormCreateNotes from "./FormCreateNotes.tsx";
+import {useMutation} from "@tanstack/react-query";
+import {deleteNoteDELETE} from "../../services/NotasService.ts";
+import {toast} from "react-toastify";
 
 type NotasPanelProps = {
     notas:
@@ -21,6 +24,20 @@ type NotasPanelProps = {
         | undefined;
 }
 const NotasPanel = ({notas}: NotasPanelProps) => {
+
+    function deleteNoteLocal(idNota: string) {
+        deleteNoteMutation.mutate(idNota);
+    }
+    const deleteNoteMutation = useMutation({
+        mutationKey: ["deleteNote"],
+        mutationFn: deleteNoteDELETE,
+        onSuccess: () => {
+            toast.success("Nota eliminada correctamente!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    })
     return (
         <>
             {notas?.length > 0 ? (
@@ -35,6 +52,11 @@ const NotasPanel = ({notas}: NotasPanelProps) => {
                                             <p className="font-varela font-semibold ">{nota.titulo} por: {nota.createdBy.nombre} {nota.createdBy.apellidos}</p>
                                             <p className="font-varela text-sm ml-3 text-gray-400"> - {nota.contenido}</p>
                                         </div>
+                                        <button
+                                            onClick={() => {
+                                                deleteNoteLocal(nota._id);
+                                            }}
+                                            className="bg-red-400 px-2 py-1 text-white font-varela font-semibold rounded-lg hover:bg-red-600 transition-colors duration-500">Eliminar</button>
                                     </div>
                                 </>
                             ))}

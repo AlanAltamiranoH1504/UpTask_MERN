@@ -26,3 +26,8 @@ export const responseFindAllNotes = z.object({
         })
     )
 });
+
+export const responseGeneralNote = z.object({
+    status: z.boolean(),
+    message: z.string(),
+});

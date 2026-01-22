@@ -207,6 +207,27 @@ const edit_profile = async (req, res) => {
     }
 }
 
+const update_password = async (req, res) => {
+    try {
+        const user_to_update_password = req.user;
+        const password_hash = await bcrypt.hash(req.body.new_password, 10);
+        await User.findByIdAndUpdate(user_to_update_password._id, {
+            $set: {
+                password: password_hash
+            }
+        });
+        return res.status(200).json({
+            status: true,
+            message: "Password actualizada correctamente"
+        });
+    }catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Error en actualizacion de password"
+        });
+    }
+}
+
 const logout_user = (req, res) => {
     try {
         req.user = null;
@@ -230,5 +251,6 @@ export {
     reset_password,
     show_user,
     logout_user,
-    edit_profile
+    edit_profile,
+    update_password
 }

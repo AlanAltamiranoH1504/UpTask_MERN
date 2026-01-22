@@ -1,4 +1,5 @@
 import type {
+    FormChangePassword,
     FormConfirmUser,
     FormEditProfile,
     FormLogin,
@@ -129,6 +130,27 @@ export async function editProfilePUT(data: FormEditProfile) {
         if (axios.isAxiosError(e)) {
             throw e.response?.data || {
                 message: "Ocurrio un error en la actualizacion de datos"
+            }
+        }
+        throw e;
+    }
+}
+
+export async function changePasswordPUT(data: FormChangePassword) {
+    try {
+        const responseAPI = await ClienteAxios.put("/users/update_password", data, {
+            headers: {
+                "Authorization": "Bearer " + getJWTLocalStorage()
+            }
+        });
+        const resultAPI = responseGeneralUser.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return responseAPI.data;
+        }
+    }catch (e) {
+        if (axios.isAxiosError(e)) {
+            throw e.response?.data || {
+                message: "Ocurrio un error en el cambio de password"
             }
         }
         throw e;

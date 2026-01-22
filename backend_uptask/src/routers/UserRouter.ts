@@ -5,13 +5,13 @@ import {
     login_user, logout_user,
     prueba,
     reset_password,
-    send_email_reset_password, show_user
+    send_email_reset_password, show_user, update_password
 } from "../controllers/UserController";
 import {
     ConfirmUserRequest,
     CreateUserRequest, EditProfileRequest,
     LoginRequest, ResetPasswordRequest,
-    SendEmailResetPasswordRequest
+    SendEmailResetPasswordRequest, UpdatePasswordRequest
 } from "../validators/UserValidators";
 import {middlewareJWT} from "../middlewares/middlewareJWT";
 
@@ -21,6 +21,7 @@ router.get("/prueba", middlewareJWT, prueba);
 router.post("/create_user", CreateUserRequest, create_user);
 router.get("/show_user", middlewareJWT, show_user);
 router.put("/edit_profile", middlewareJWT, EditProfileRequest, edit_profile);
+router.put("/update_password", middlewareJWT, UpdatePasswordRequest, update_password);
 router.post("/confirm/:token", ConfirmUserRequest, confirm_user);
 router.post("/login", LoginRequest, login_user);
 router.post("/send_email_reset_password", SendEmailResetPasswordRequest, send_email_reset_password);

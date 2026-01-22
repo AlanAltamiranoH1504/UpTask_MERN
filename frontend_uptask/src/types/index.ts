@@ -67,6 +67,12 @@ export type FormEditProfile = {
     rol: string
 }
 
+export type FormChangePassword = {
+    old_password: string,
+    new_password: string,
+    confirm_password: string
+}
+
 // INFERENCIAS
 export type UserInSession = z.infer<typeof responseUserInSessionAPI>
 export type FindProyectoById = z.infer<typeof responseFindProyectoById>

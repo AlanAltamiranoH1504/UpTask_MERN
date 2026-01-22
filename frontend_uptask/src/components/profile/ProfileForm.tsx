@@ -103,8 +103,13 @@ export const ProfileForm = () => {
                         >E-mail</label>
                         <input
                             {...register("email", {
-                                required: "El email es obligatorio"
+                                required: "El email es obligatorio",
+                                pattern: {
+                                    value: /\S+@\S+\.\S+/,
+                                    message: "Formato de email no valido"
+                                }
                             })}
+
                             id="text"
                             type="email"
                             placeholder="Tu Email"

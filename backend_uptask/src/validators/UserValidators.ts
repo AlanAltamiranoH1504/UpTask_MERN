@@ -262,7 +262,38 @@ const EditProfileRequest = [
         }
         next();
     }
-]
+];
+
+const UpdatePasswordRequest = [
+    body("new_password")
+        .notEmpty().withMessage("El password nuevo es obligatorio")
+        .isString().withMessage("Formato de password nuevo no valido")
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/)
+        .isLength({min: 6}).withMessage("El password debe ser de almenos 6 caracteres"),
+    body("old_password")
+        .notEmpty().withMessage("La password antigua es obligatoria")
+        .isString().withMessage("Formato de antigua password no valida"),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            return res.status(409).json({
+                errors: errors.array()
+            });
+        }
+
+        //! Validacion de password antigua
+        const user_to_verfiy_password = await User.findById(req.user._id);
+        const password_check = await bcrypt.compare(req.body.old_password, user_to_verfiy_password.password);
+        if (!password_check) {
+            return res.status(403).json({
+                status: false,
+                message: "La password antigua no coincide"
+            });
+        }
+        next();
+    }
+];
 
 export {
     CreateUserRequest,
@@ -270,5 +301,6 @@ export {
     LoginRequest,
     SendEmailResetPasswordRequest,
     ResetPasswordRequest,
-    EditProfileRequest
+    EditProfileRequest,
+    UpdatePasswordRequest
 }

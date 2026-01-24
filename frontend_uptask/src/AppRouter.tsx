@@ -14,6 +14,7 @@ import TeamMembers from "./views/proyectos/TeamMembers.tsx";
 import {ProfileView} from "./views/profile/ProfileView.tsx";
 import {ChangePassword} from "./views/profile/ChangePassword.tsx";
 import {ProfileLayout} from "./layouts/ProfileLayout.tsx";
+import {Page404} from "./views/Page404.tsx";
 const AppRouter = () => {
     return (
         <>
@@ -39,6 +40,10 @@ const AppRouter = () => {
                         <Route path="/registro" element={<RegisterView/>}></Route>
                         <Route path="/olvide-password" element={<SendEmailToResetPasswordView/>}></Route>
                         <Route path="/auth/olvide-password/:token" element={<ResetPasswordView/>}></Route>
+                    </Route>
+
+                    <Route element={<AuthLayout/>}>
+                        <Route path="*" element={<Page404/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

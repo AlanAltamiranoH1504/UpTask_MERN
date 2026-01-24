@@ -1,26 +1,92 @@
-# UpTask - Administrador de Proyectos y Tareas
+<p align="center">
+  <img src="/docs/imgs/logo.svg" alt="UpTask Logo" width="200"/>
+</p>
 
-UpTask es una aplicación web que permite a empresas **administrar proyectos, tareas y usuarios** de manera eficiente. La aplicación está separada en **frontend y backend**, utilizando tecnologías modernas:
+<h1 align="center">🚀 UpTask — Administrador de Proyectos y Tareas</h1>
 
-* **Frontend:** React.js con Hooks, Headless UI y Tailwind CSS
-* **Backend:** Express.js con TypeScript, MongoDB y Mongoose
+<p align="center">
+  Plataforma moderna para la gestión de proyectos, tareas y equipos de trabajo.
+</p>
 
-Esta arquitectura permite escalabilidad, mantenibilidad y una experiencia de usuario rápida e interactiva.
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-blue" />
+  <img src="https://img.shields.io/badge/Backend-Express-green" />
+  <img src="https://img.shields.io/badge/Language-TypeScript-blueviolet" />
+  <img src="https://img.shields.io/badge/Database-MongoDB-brightgreen" />
+  <img src="https://img.shields.io/badge/Status-En%20Desarrollo-orange" />
+</p>
+
+---
+
+## 📌 Descripción
+
+**UpTask** es una aplicación web diseñada para ayudar a empresas y equipos a **organizar proyectos, asignar tareas y administrar usuarios** de forma eficiente.
+
+Está desarrollada bajo una arquitectura **Frontend + Backend desacoplada**, utilizando tecnologías modernas que garantizan:
+
+✅ Escalabilidad  
+✅ Seguridad  
+✅ Alto rendimiento  
+✅ Mantenibilidad
+
+---
+
+## 🧩 Tecnologías utilizadas
+
+### 🎯 Frontend
+
+- React.js con Hooks
+- Tailwind CSS
+- Headless UI
+- React Hook Form
+- Axios
+
+### ⚙️ Backend (Actual)
+
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Express Validator
+
+---
+
+## 🆕 Próximamente
+
+> ⚡ **Nueva versión Backend con Spring Boot**
+
+Actualmente se encuentra en planeación el desarrollo de una versión alternativa del backend usando:
+
+- Java + Spring Boot
+- Spring Security + JWT
+- JPA / Hibernate
+- Arquitectura RESTful
+- PostgreSQL o MySQL
+
+Esto permitirá comparar rendimiento, escalabilidad y arquitectura entre **Node.js** y **Spring Boot**.
+
+📅 Estado: **En desarrollo / Próximamente disponible**
 
 ---
 
 ## 📝 Funcionalidades principales
 
-* Crear, editar y eliminar **proyectos**.
-* Gestionar **tareas** dentro de cada proyecto.
-* Crear y administrar **usuarios** asignados a proyectos o tareas.
-* Visualización de **estado de tareas** (pendiente, en progreso, completada).
-* Autenticación y autorización mediante **JWT**.
-* Validaciones de datos en backend y frontend.
-* Notificaciones o alertas básicas sobre tareas pendientes.
-* Control de acceso según roles o permisos (administrador, miembro de proyecto).
+- 📁 Crear, editar y eliminar **proyectos**
+- ✅ Gestión completa de **tareas**
+- 👥 Administración de **usuarios**
+- 🔄 Estados de tareas:
+    - Pendiente
+    - En progreso
+    - Completada
+- 🔐 Autenticación y autorización con JWT
+- 🛡️ Control de roles y permisos
+- 🔔 Notificaciones básicas
+- ✔️ Validaciones en frontend y backend
 
 ---
+
 
 ## 🏗️ Arquitectura del proyecto
 

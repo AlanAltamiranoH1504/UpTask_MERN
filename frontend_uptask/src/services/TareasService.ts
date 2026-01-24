@@ -7,6 +7,7 @@ import {
     responseUpdateTareaAPI
 } from "../schemas/TareasSchemas.ts";
 import {getJWTLocalStorage} from "./GetJWTLocalStorage.ts";
+import axios from "axios";
 
 export async function createTareaPOST(tarea: FormCreateTarea) {
     // eslint-disable-next-line no-useless-catch
@@ -71,9 +72,13 @@ export async function updateStatusTaskPUT(data: FormEditStatusTarea) {
         if (resultAPI.success) {
             return resultAPI.data;
         }
-        throw new Error("Error en actualizacion de estado de tarea");
-    }catch {
-        throw new Error("Error en actualizacion de estado de la tarea");
+    } catch (e) {
+        if (axios.isAxiosError(e)) {
+            throw e.response?.data || {
+                message: "Ocurrio un error en la actualizacion del estado"
+            }
+        }
+        throw e;
     }
 }
 
